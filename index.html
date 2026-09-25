@@ -1,249 +1,25 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanBCI Advanced Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Tajawal', sans-serif; }
-        @keyframes brainWave {
-            0%, 100% { transform: scaleY(0.2); }
-            50% { transform: scaleY(1); }
-        }
-        .wave-bar { animation: brainWave 0.8s ease-in-out infinite; transform-origin: bottom; }
-    </style>
-</head>
-<body class="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-6 flex flex-col items-center justify-center space-y-6">
-
-    <!-- المنصة الرئيسية لتحليل الإشارات -->
-    <div class="w-full max-w-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 md:p-8 space-y-6">
-        <div class="text-center space-y-2 border-b border-slate-800/60 pb-4">
-            <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
-                CleanBCI Advanced Dashboard
-            </h1>
-            <p class="text-slate-400 text-xs md:text-sm font-medium">نظام تحليل إشارات الدماغ المتقدم - محاكاة الدماغ الواعي للبشر</p>
-        </div>
-
-        <div class="space-y-3" dir="ltr">
-            <label class="block text-sm font-semibold text-slate-300 text-right" dir="rtl">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (μV):</label>
-            <textarea id="eeg-input" 
-                      class="w-full h-20 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-cyan-400 font-mono text-base tracking-wider focus:outline-none focus:border-indigo-500"
-                      placeholder="[12.4, -4.2, 28.1, -15.6, 32.4, -8.9]">[2.1, 2.5, 2.8, 1.9, 2.4, 2.2]</textarea>
-        </div>
-
-        <!-- أزرار العينات الجاهزة وتوليد إشارة عشوائية -->
-        <div class="space-y-3">
-            <div class="flex items-center justify-between">
-                <span class="block text-xs font-bold text-slate-400">عينات مصفوفات حقيقية جاهزة للفحص اللحظي:</span>
-                <button onclick="generateRandomStream()" class="py-1 px-3 bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-300 border border-indigo-500/50 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1">
-                    ⚡ توليد إشارة عشوائية للفحص
-                </button>
-            </div>
-            <div class="flex flex-wrap gap-2 text-xs">
-                <button onclick="loadSample([2.1, 2.5, 2.8, 1.9, 2.4, 2.2])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">💪 اليد اليمنى</button>
-                <button onclick="loadSample([1.8, 1.75, 1.82, 1.78, 1.80])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">✋ اليد اليسرى</button>
-                <button onclick="loadSample([1.6, 1.7, 1.55, 1.65, 1.6, 1.72])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">🏃 المشي والحركة</button>
-                <button onclick="loadSample([1.2, 2.8, 0.9, 2.6, 1.1, 2.9])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">🎮 طور اللعب السريع</button>
-                <button onclick="loadSample([1.4, 1.42, 1.38, 1.45, 1.41])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">📚 التركيز والقراءة</button>
-                <button onclick="loadSample([1.1, 1.05, 0.95, 1.2, 1.08])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">🚽 قضاء الحاجة</button>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <button onclick="runMindAnalysis()" 
-                    class="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
-                🧠 تحليل وفك تشويش الإشارات
-            </button>
-            <button onclick="resetDashboard()" 
-                    class="w-full py-3.5 px-6 bg-slate-800/80 hover:bg-slate-700/90 font-bold rounded-xl border border-slate-700/50 transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-300">
-                🔄 مسح وإعادة تعيين
-            </button>
-        </div>
-
-        <!-- تقرير الحالة العصبية -->
-        <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-5 md:p-6 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800/40 pb-2">
-                <h2 class="text-base md:text-lg font-bold text-indigo-400" dir="ltr">✨ Advanced Neural Report</h2>
-                
-                <!-- شريط الموجات الدماغية الحية -->
-                <div id="brain-wave-visualizer" class="flex items-end gap-[3px] h-6 px-2 opacity-30 transition-all duration-300">
-                    <div class="wave-bar w-[3px] h-full bg-cyan-400 rounded-full" style="animation-delay: 0.1s;"></div>
-                    <div class="wave-bar w-[3px] h-4 bg-indigo-400 rounded-full" style="animation-delay: 0.3s;"></div>
-                    <div class="wave-bar w-[3px] h-6 bg-purple-400 rounded-full" style="animation-delay: 0.2s;"></div>
-                    <div class="wave-bar w-[3px] h-3 bg-cyan-400 rounded-full" style="animation-delay: 0.5s;"></div>
-                    <div class="wave-bar w-[3px] h-5 bg-emerald-400 rounded-full" style="animation-delay: 0.15s;"></div>
-                    <div class="wave-bar w-[3px] h-4 bg-purple-400 rounded-full" style="animation-delay: 0.4s;"></div>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-slate-900/40 p-4 border border-slate-800/40 rounded-lg">
-                    <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">التصنيف العصبي / Neural Classification</span>
-                    <span id="neuro-classification" class="text-base md:text-lg font-bold text-emerald-400 block mt-1">Ready / جاهز للاستقبال</span>
-                </div>
-                <div class="bg-slate-900/40 p-4 border border-slate-800/40 rounded-lg space-y-2" dir="ltr">
-                    <div>
-                        <span class="text-xs font-semibold text-slate-500 block text-left">Average Cleaned Signal:</span>
-                        <span id="avg-signal" class="text-sm font-mono font-bold text-cyan-400 block mt-0.5">—</span>
-                    </div>
-                    <div>
-                        <span class="text-xs font-semibold text-slate-500 block text-left">Spectral Power:</span>
-                        <span id="power-signal" class="text-sm font-mono font-bold text-cyan-400 block mt-0.5">—</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-slate-900/40 p-5 border border-slate-800/40 rounded-lg space-y-4">
-                <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">التحليل السريري والتقني / Clinical Analysis</span>
-                <div class="space-y-1">
-                    <span class="text-xs font-bold text-indigo-400 block">[التحليل باللغة العربية]</span>
-                    <p id="analysis-ar" class="text-sm text-slate-300 leading-relaxed font-medium">في انتظار إدخال الإشارة والتحليل...</p>
-                </div>
-                <div class="space-y-1 border-t border-slate-800/40 pt-3" dir="ltr">
-                    <span class="text-xs font-bold text-indigo-400 block text-left">[English Analysis]</span>
-                    <p id="analysis-en" class="text-sm text-slate-400 leading-relaxed font-mono text-left">Awaiting EEG data stream execution...</p>
-                </div>
-            </div>
-
-            <!-- سجل العمليات السابقة -->
-            <div class="border-t border-slate-800/60 pt-3 space-y-2">
-                <span class="block text-xs font-bold text-slate-400">📋 سجل العمليات والفحوصات السابقة (Diagnostic History Log):</span>
-                <div id="history-log" class="space-y-1.5 text-xs text-slate-400 font-mono">
-                    <div class="bg-slate-900/30 p-2 rounded border border-slate-800/40 text-slate-500">لا توجد عمليات فحص مسجلة حتى الآن.</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- لوحة تحكم المريض المشلول الذكية والتفاعلية -->
-    <div class="w-full max-w-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 md:p-8 space-y-4">
-        <div class="border-b border-slate-800/60 pb-3">
-            <h2 class="text-xl font-bold text-purple-400">♿ لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)</h2>
-            <p class="text-slate-400 text-xs mt-1">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</p>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
-            <div id="card-right" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
-                <span class="text-2xl">💪</span>
-                <span class="font-bold text-sm text-slate-200">اليد اليمنى</span>
-            </div>
-            <div id="card-left" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
-                <span class="text-2xl">✋</span>
-                <span class="font-bold text-sm text-slate-200">اليد اليسرى</span>
-            </div>
-            <div id="card-walk" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
-                <span class="text-2xl">🏃</span>
-                <span class="font-bold text-sm text-slate-200">المشي والحركة</span>
-            </div>
-            <div id="card-game" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
-                <span class="text-2xl">🎮</span>
-                <span class="font-bold text-sm text-slate-200">طور اللعب السريع</span>
-            </div>
-            <div id="card-focus" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
-                <span class="text-2xl">📚</span>
-                <span class="font-bold text-sm text-slate-200">التركيز والقراءة</span>
-            </div>
-            <div id="card-potty" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
-                <span class="text-2xl">🚽</span>
-                <span class="font-bold text-sm text-slate-200">طلب قضاء الحاجة</span>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let diagnosticHistory = [];
-
-        function loadSample(arr) {
-            document.getElementById('eeg-input').value = JSON.stringify(arr);
-            runMindAnalysis();
-        }
-
-        function generateRandomStream() {
-            const randomArr = [];
-            const length = Math.floor(Math.random() * 3) + 5;
-            for (let i = 0; i < length; i++) {
-                let val = (Math.random() * 2 + 0.9).toFixed(2);
-                randomArr.push(parseFloat(val));
-            }
-            document.getElementById('eeg-input').value = JSON.stringify(randomArr);
-            runMindAnalysis();
-        }
-
-        function resetDashboard() {
-            document.getElementById('eeg-input').value = "";
-            document.getElementById('neuro-classification').innerText = "Ready / جاهز للاستقبال";
-            document.getElementById('avg-signal').innerText = "—";
-            document.getElementById('power-signal').innerText = "—";
-            document.getElementById('analysis-ar').innerText = "في انتظار إدخال الإشارة والتحليل...";
-            document.getElementById('analysis-en').innerText = "Awaiting EEG data stream execution...";
-            document.getElementById('brain-wave-visualizer').style.opacity = "0.3";
-            
-            document.querySelectorAll('[id^="card-"]').forEach(el => {
-                el.classList.remove('opacity-100', 'border-indigo-500', 'bg-indigo-950/40', 'scale-105', 'shadow-lg');
-                el.classList.add('opacity-40');
-            });
-        }
-
-        function processBrainMind(signalArray) {
-            if (!Array.isArray(signalArray) || signalArray.length === 0) {
-                return { classification: "Idle State / وضع الخمول", descAr: "لا توجد إشارات مدخلة.", descEn: "No signal input.", avgSignal: "0.00 µV", powerSignal: "0.00 dB", cardId: null };
-            }
-
-            const maxVal = Math.max(...signalArray);
-            const minVal = Math.min(...signalArray);
-            const sum = signalArray.reduce((a, b) => a + b, 0);
-            const avg = sum / signalArray.length;
-            const len = signalArray.length;
-            const variance = signalArray.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / len;
-
-            let result = { avgSignal: `${avg.toFixed(2)} µV`, powerSignal: `${(sum * avg).toFixed(2)} dB` };
-
-            if (maxVal > 2.0 && avg > 1.4) {
-                result.classification = "Right Hand Movement / حركة اليد اليمنى";
-                result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (Motor Cortex)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بدقة.";
-                result.descEn = "A sharp, localized neural discharge detected in the left frontal lobe (Motor Cortex), indicating a definitive motor intention to precisely move the Right Hand.";
-                result.cardId = "card-right";
-            } else if (maxVal > 1.65 && maxVal <= 2.0 && variance < 0.1) {
-                result.classification = "Left Hand Movement / حركة اليد اليسرى";
-                result.descAr = "تم رصد تفجر إشاري نشط متوافق مع القشرة الحركية اليمنى، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق تشويش عظام الجمجمة.";
-                result.descEn = "An active signal burst registered within the right motor cortex, validating successful decoding of the Left Hand movement command while bypassing cranial dampening.";
-                result.cardId = "card-left";
-            } else if (avg > 1.5 && len >= 6) {
-                result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
-                result.descAr = "إشارات متزامنة واسعة النطاق ممتدة عبر فصي الدماغ تتوافق مع الأنماط الحركية التلقائية والعفوية؛ مثل الرغبة في المشي أو تنسيق الأرجل.";
-                result.descEn = "Broad, synchronized bilateral hemisphere signals corresponding to automated motor patterns, successfully simulating walking or automated coordination.";
-                result.cardId = "card-walk";
-            } else if (variance >= 0.08 && maxVal > 1.55) {
-                result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
-                result.descAr = "تذبذبات حسية حركية متعاقبة ذات تباين عالٍ تحاكي ردود الفعل الفورية وعمليات اتخاذ القرار اللحظي المتوافقة تماماً مع ألعاب الفيديو السريعة.";
-                result.descEn = "High-frequency oscillations combined with rapid consecutive sensorimotor changes, simulating reflex actions and instantaneous decision-making.";
-                result.cardId = "card-game";
-            } else if (avg > 1.35 && avg <= 1.5 && variance < 0.05) {
-                result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
-                result.descAr = "ارتفاع ملحوظ في ترددات وسعة موجات بيتا فوق مناطق المعالجة البصرية واللغوية، مما يدل على حالة قراءة نشطة أو تركيز ذهني عميق.";
-                result.descEn = "Significant amplitude spikes in Beta frequencies over visual and language processing centers, demonstrating an active state of text comprehension.";
-                result.cardId = "card-focus";
-            } else if (avg >= 1.0 && avg <= 1.35 && minVal < 1.1) {
-                result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
-                result.descAr = "نجاح فك تشفير نبضات بطيئة آتية من الجهاز العصبي الذاتي، تحاكي بدقة التنبيهات الحشوية الداخلية للجسم والرغبة في قضاء الحاجة البيولوجية.";
-                result.descEn = "Successful decoding of low-frequency autonomic visceral impulses, precisely tracking internal physiological indicators and the biological urge.";
-                result.cardId = "card-potty";
-            } else {
-                result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
-                result.descAr = "نشاط قشري عام غير مركزي يتوافق مع التيارات العفوية الارتدادية أو الحركات الدقيقة واللاإرادية في وضع الراحة لتعديل الوضعية.";
-                result.descEn = "Non-localized general cortical activity consistent with spontaneous background reflexes or minor involuntary shifts executed during rest.";
-                result.cardId = null;
-            }
-            return result;
-        }
-
         function runMindAnalysis() {
+            let rawInput = document.getElementById('eeg-input').value.trim();
+            
+            // تنظيف أي رموز غير مقبولة وتعديل الأقواس والفاصلة العربية تلقائياً لضمان دقة النظام البرمجي
+            let sanitized = rawInput
+                .replace(/،/g, ',')
+                .replace(/[“”]/g, '"')
+                .trim();
+            
+            // التأكد من وجود أقواس المصفوفة، وإضافتها تلقائياً إن لم تكن موجودة لتبقى الأمور احترافية
+            if (!sanitized.startsWith('[')) sanitized = '[' + sanitized;
+            if (!sanitized.endsWith(']')) sanitized = sanitized + ']';
+
             let features;
             try {
-                features = JSON.parse(document.getElementById('eeg-input').value);
+                features = JSON.parse(sanitized);
             } catch (e) {
+                alert('الرجاء التأكد من كتابة المصفوفة والأقواس بشكل صحيح!');
+                return;
+            }
+
+            if (!Array.isArray(features) || features.length === 0) {
                 alert('الرجاء التأكد من كتابة المصفوفة والأقواس بشكل صحيح!');
                 return;
             }
@@ -284,6 +60,3 @@
             });
             document.getElementById('history-log').innerHTML = logHtml;
         }
-    </script>
-</body>
-</html>
