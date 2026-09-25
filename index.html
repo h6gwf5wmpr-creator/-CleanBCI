@@ -54,6 +54,9 @@
 [31.4, -0.9, 25.7, -11.5]</textarea>
             
             <div class="flex flex-wrap gap-3">
+                <button onclick="quickConnectSticker()" class="bg-cyan-950/80 hover:bg-cyan-900 text-cyan-400 border border-cyan-700 font-bold py-3 px-4 rounded-xl transition-all flex items-center gap-2">
+                    <span>🔗</span> ربط الملصق النانوي (1.4s)
+                </button>
                 <button onclick="processSignals()" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
                     <span>🧠</span> فك تشويش وتحليل الإشارة بالذكاء الاصطناعي
                 </button>
@@ -263,6 +266,25 @@
             return tokens.map(t => parseFloat(t)).filter(n => !isNaN(n));
         }
 
+        // دالة الاقتران السريع بالملصق النانوي خلف الأذن (جديدة)
+        function quickConnectSticker() {
+            const statusEl = document.getElementById('cloudStatus');
+            statusEl.innerHTML = '🔄 جاري البحث عن الملصق النانوي خلف الأذن...';
+            statusEl.className = 'text-[11px] text-yellow-400 bg-yellow-950/50 px-2 py-1 rounded border border-yellow-800';
+
+            setTimeout(() => {
+                statusEl.innerHTML = '⚡ متصل بالملصق النانوي (زمن الاستجابة: 14ms)';
+                statusEl.className = 'text-[11px] text-emerald-400 bg-emerald-950/50 px-2 py-1 rounded border border-emerald-800';
+                
+                addEventLog('ربط الملصق النانوي خلف الأذن', '14ms Latency');
+
+                // تشغيل محاكاة حية تلقائية بعد الاتصال الناجح
+                if (!simulationInterval) {
+                    toggleSimulation();
+                }
+            }, 1500);
+        }
+
         function processSignals() {
             if (isOverrideActive) {
                 alert('⚠️ مفتاح الطوارئ السريري مفعل! تم إيقاف تمرير الإشارات عصبياً حمايةً للمريض.');
@@ -284,7 +306,6 @@
             document.getElementById('avgSignal').innerText = `${avg} \u03bcV`;
             document.getElementById('spectralPower').innerText = `${spectral} dB`;
 
-            // اختيار أمر عشوائي واقعي للاستجابة
             const randomCmd = commandsList[Math.floor(Math.random() * commandsList.length)];
             
             resetCards();
@@ -295,10 +316,8 @@
 
             document.getElementById('clinicalInsightText').innerText = randomCmd.desc;
             
-            // Text-to-Speech Vocalizer for non-verbal patients
             speakText(randomCmd.name);
 
-            // حساب المؤشرات العصبية المتغيرة بناءً على البيانات
             const focus = Math.min(99, Math.max(60, Math.floor(Math.abs(avg) * 2.5) + 65));
             const stability = Math.min(99, Math.max(70, 95 - Math.floor(Math.abs(avg - calibrationBaseline))));
             const pain = Math.floor(Math.random() * 10) + 5;
