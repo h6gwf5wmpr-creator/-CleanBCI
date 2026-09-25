@@ -1,222 +1,215 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CleanBCI Advanced Dashboard</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
-body { background-color: #0b0f19; color: #f8fafc; padding: 15px; direction: rtl; }
-.dashboard-container { max-width: 900px; margin: 0 auto; }
-/* Header */
-header { text-align: center; margin-bottom: 20px; }
-header h1 { color: #a855f7; font-size: 22px; margin-bottom: 5px; }
-header p { color: #94a3b8; font-size: 13px; }
-/* Input Card */
-.card { background-color: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
-.card label { display: block; margin-bottom: 8px; font-size: 14px; color: #cbd5e1; }
-textarea { width: 100%; height: 90px; background-color: #030712; color: #38bdf8; border: 1px solid #374151; padding: 10px; border-radius: 8px; font-size: 14px; resize: none; direction: ltr; text-align: left; }
-.actions-row { display: flex; gap: 10px; margin-top: 10px; }
-button { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-.btn-analyze { background: linear-gradient(135deg, #7c3aed, #4f46e5); color: #fff; }
-.btn-analyze:hover { opacity: 0.9; }
-.btn-clear { background-color: #1f2937; color: #e5e7eb; }
-/* Reports Section */
-.report-section { background-color: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; margin-bottom: 20px; }
-.report-title { color: #38bdf8; font-size: 15px; margin-bottom: 12px; font-weight: bold; }
-.metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-.metric-box { background-color: #030712; padding: 10px; border-radius: 8px; border: 1px solid #1f2937; }
-.metric-box span { display: block; font-size: 12px; color: #94a3b8; }
-.metric-box strong { font-size: 14px; color: #38bdf8; }
-.metric-box strong.class-text { color: #4ade80; font-size: 13px; }
-.analysis-box { background-color: #030712; padding: 12px; border-radius: 8px; border: 1px solid #1f2937; font-size: 13px; line-height: 1.6; }
-.analysis-box p { margin-bottom: 6px; color: #cbd5e1; }
-.analysis-box .en-text { color: #94a3b8; font-size: 12px; direction: ltr; text-align: left; }
-/* Control Panel Grid */
-.control-panel-title { color: #c084fc; font-size: 16px; margin-bottom: 12px; font-weight: bold; text-align: center; }
-.grid-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.control-btn { background-color: #111827; border: 1px solid #1f2937; border-radius: 10px; padding: 15px 10px; text-align: center; color: #f8fafc; font-size: 12px; cursor: pointer; }
-.control-btn span { display: block; font-size: 20px; margin-bottom: 5px; }
-.control-btn.active { border-color: #38bdf8; background-color: #1e293b; }
-@media (max-width: 600px) {
-.grid-buttons { grid-template-columns: 1fr; }
-.metrics-grid { grid-template-columns: 1fr; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanBCI Advanced Dashboard</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #070a13; color: #f8fafc; padding: 15px; margin: 0; text-align: center; }
+        .container { max-width: 850px; margin: 0 auto; background: #0f172a; padding: 20px; border-radius: 14px; box-shadow: 0 4px 25px rgba(0,0,0,0.7); border: 1px solid #1e293b; }
+        h2 { color: #38bdf8; margin-bottom: 5px; font-size: 22px; }
+        p.sub { color: #94a3b8; font-size: 13px; margin-bottom: 15px; }
+        textarea { width: 95%; height: 95px; background: #070a13; color: #38bdf8; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 14px; direction: ltr; text-align: left; }
+        .btn-group { margin: 15px 0; display: flex; gap: 10px; justify-content: center; }
+        button { background: #8b5cf6; color: white; border: none; padding: 11px 22px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #7c3aed; }
+        .btn-clear { background: #334155; }
+        .btn-clear:hover { background: #475569; }
+        
+        .report-box { margin-top: 20px; background: #070a13; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; text-align: left; direction: ltr; }
+        .report-box h3 { color: #38bdf8; font-size: 15px; margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-align: right; }
+        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #e2e8f0; margin-bottom: 12px; }
+        .analysis-text { background: #0f172a; padding: 10px; border-radius: 6px; margin-top: 8px; font-size: 13px; color: #cbd5e1; direction: rtl; text-align: right; border: 1px solid #1e293b; }
+        
+        /* قسم بوابة تجديد الحبل الشوكي والمربعات الثلاثة */
+        .spine-section { margin-top: 25px; background: #0b1329; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; text-align: right; }
+        .spine-title { color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .spine-sub { color: #94a3b8; font-size: 12px; margin-bottom: 15px; }
+        .spine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .spine-card { background: #131b2e; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
+        .spine-card-title { font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
+        .spine-card-val { font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 2px; }
+        .spine-card-desc { font-size: 11px; color: #38bdf8; }
+        .progress-bar { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .progress-fill-1 { width: 64%; background: #a855f7; height: 100%; }
+        .progress-fill-2 { width: 76%; background: #22c55e; height: 100%; }
+        .progress-fill-3 { width: 99%; background: #3b82f6; height: 100%; }
+
+        /* لوحة التحكم السفلية */
+        .control-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .card { background: #131b2e; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; font-size: 13px; color: #e2e8f0; font-weight: bold; }
+    </style>
 </head>
 <body>
-<div class="dashboard-container">
-<header>
-<h1>CleanBCI Advanced Dashboard</h1>
-<p>نظام متطور لمسح ومعالج الإشارات العصبية للبشر</p>
-</header>
-<!-- Input Section -->
-<div class="card">
-<label>أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (µV):</label>
-<textarea id="signalInput">[24.8, -1.5, 18.2, -8.4],
+
+    <div class="container">
+        <h2>CleanBCI Advanced Dashboard</h2>
+        <p class="sub">نظام متطور لمسح ومعالجة الإشارات العصبية للبشر</p>
+
+        <label style="display:block; text-align:right; font-size:13px; color:#94a3b8; margin-bottom:5px;">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (µV):</label>
+        <textarea id="signalInput">[24.8, -1.5, 18.2, -8.4],
 [28.1, -2.0, 22.4, -10.1],
-[31.4, -0.9, 25.7, -11.5]</textarea>
-<div class="actions-row">
-<button class="btn-clear" id="clearBtn">تصفية البيانات</button>
-<button class="btn-analyze" id="analyzeBtn">🧠 فك تشويش وتحليل الإشارة</button>
-</div>
-</div>
-<!-- Advanced Neural Report -->
-<div class="report-section">
-<div class="report-title">Advanced Neural Report</div>
-<div class="metrics-grid">
-<div class="metric-box">
-<span>Average Cleaned Signal:</span>
-<strong id="avgSignal">NaN µV</strong>
-<span style="margin-top: 5px;">Spectral Power:</span>
-<strong id="spectralPower">NaN dB</strong>
-</div>
-<div class="metric-box">
-<span>NEURAL CLASSIFICATION / التصنيف العصبي:</span>
-<strong id="classification" class="class-text">-</strong>
-</div>
-</div>
-<div class="analysis-box">
-<p><strong>التحليل السريري والتقني (CLINICAL ANALYSIS):</strong></p>
-<p id="descAr">قم بالضغط على زر التحليل لفك تشفير الإشارة المدخلة بدقة.</p>
-<div class="en-text" id="descEn">Click analyze to decode the neural signal.</div>
-</div>
-</div>
-<!-- Patient Control Panel -->
-<div>
-<div class="control-panel-title">لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)</div>
-<div class="grid-buttons">
-<div class="control-btn">
-<span>💪</span>
-اليد اليمنى
-</div>
-<div class="control-btn">
-<span>✋</span>
-اليد اليسرى
-</div>
-<div class="control-btn">
-<span>🏃</span>
-المشي والحركة
-</div>
-<div class="control-btn active">
-<span>🚽</span>
-طلب قضاء الحاجة
-</div>
-<div class="control-btn">
-<span>📚</span>
-التركيز والقراءة
-</div>
-<div class="control-btn">
-<span>🎮</span>
-طور اللعب السريع
-</div>
-</div>
-</div>
-</div>
-<script>
-function processBrainMind(inputData) {
-let signalArray = [];
-if (typeof inputData === 'string') {
-try {
-const cleanedText = inputData.replace(/[[]]/g, '');
-signalArray = cleanedText
-.split(/[\s,]+/)
-.map(item => parseFloat(item.trim()))
-.filter(item => !isNaN(item));
-} catch (e) {
-signalArray = [];
-}
-} else if (Array.isArray(inputData)) {
-signalArray = inputData.flat(Infinity).map(item => parseFloat(item)).filter(item => !isNaN(item));
-}
-if (!Array.isArray(signalArray) || signalArray.length === 0) {
-return {
-classification: "Idle State / وضع الخمول",
-descAr: "لا توجد إشارات مدخلة صالحة، أو أن المصفوفة فارغة.",
-descEn: "No valid signal input detected.",
-avgSignal: "0.00 µV",
-powerSignal: "0.00 dB"
-};
-}
-const maxVal = Math.max(...signalArray);
-const minVal = Math.min(...signalArray);
-const sum = signalArray.reduce((a, b) => a + b, 0);
-const avg = sum / signalArray.length;
-const len = signalArray.length;
-const variance = signalArray.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / len;
-const spectralPowerVal = signalArray.reduce((acc, val) => acc + (val * val), 0) / len;
-let result = {
-classification: "",
-descAr: "",
-descEn: "",
-avgSignal: ⁠${isNaN(avg) ? '0.00' : avg.toFixed(2)} µV⁠,
-powerSignal: ⁠${isNaN(spectralPowerVal) ? '0.00' : spectralPowerVal.toFixed(2)} dB⁠
-};
-if (maxVal > 2.0 && avg > 1.4) {
-result.classification = "Right Hand Movement / حركة اليد اليمنى";
-result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (Motor Cortex)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بدقة.";
-result.descEn = "A sharp, localized neural discharge detected in the left frontal lobe (Motor Cortex), indicating a definitive motor intention to precisely move the Right Hand.";
-}
-else if (maxVal > 1.65 && maxVal <= 2.0 && variance < 0.1) {
-result.classification = "Left Hand Movement / حركة اليد اليسرى";
-result.descAr = "تم رصد تفجر إشاري نشط متوافق مع القشرة الحركية اليمنى، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق تشويش عظام الجمجمة.";
-result.descEn = "An active signal burst registered within the right motor cortex, validating successful decoding of the Left Hand movement command.";
-}
-else if (avg > 1.5 && len >= 6) {
-result.classification = "Spontaneous Walking / المشي وحركة الأطراف";
-result.descAr = "إشارات متزامنة واسعة النطاق ممتدة عبر فصي الدماغ تتوافق مع الأنماط الحركية التلقائية والعفوية؛ مثل الرغبة في المشي، الوقوف، أو تنسيق الأرجل.";
-result.descEn = "Broad, synchronized bilateral hemisphere signals corresponding to automated motor patterns.";
-}
-else if (variance >= 0.08 && maxVal > 1.55) {
-result.classification = "Interactive Gaming / طور اللعب والتفاعل السريع";
-result.descAr = "تذبذبات حسية حركية متعاقبة ذات تباين عالٍ تحاكي ردود الفعل الفورية وعمليات اتخاذ القرار اللحظي المتوافقة تماماً مع ألعاب الفيديو السريعة.";
-result.descEn = "High-frequency oscillations combined with rapid consecutive sensorimotor changes.";
-}
-else if (avg > 1.35 && avg <= 1.5 && variance < 0.05) {
-result.classification = "Cognitive Focus / التركيز الذهني والقراءة";
-result.descAr = "ارتفاع ملحوظ في ترددات وسعة موجات بيتا فوق مناطق المعالجة البصرية واللغوية، مما يدل على حالة قراءة نشطة أو تركيز ذهني عميق.";
-result.descEn = "Significant amplitude spikes in Beta frequencies over visual and language processing centers.";
-}
-else if (avg >= 1.0 && avg <= 1.35 && minVal < 1.1) {
-result.classification = "Biological Excretion Urge / طلب قضاء الحاجة (طوارئ)";
-result.descAr = "نجاح فك تشفير نبضات بطيئة آتية من الجهاز العصبي الذاتي، تحاكي بدقة التنبيهات الحشوية الداخلية والجسمية الملحة في قضاء الحاجة.";
-result.descEn = "Successful decoding of low-frequency autonomic visceral impulses tracking biological urge.";
-}
-else {
-result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
-result.descAr = "نشاط قشري عام غير مركزي يتوافق مع التيارات العفوية الارتدادية أو الحركات الدقيقة واللاإرادية التي يقوم بها الجسم في وضع الراحة.";
-result.descEn = "Non-localized general cortical activity consistent with spontaneous background reflexes.";
-}
-return result;
-}
-document.addEventListener('DOMContentLoaded', () => {
-const analyzeBtn = document.getElementById('analyzeBtn');
-const clearBtn = document.getElementById('clearBtn');
-const textarea = document.getElementById('signalInput');
-function runAnalysis() {
-const output = processBrainMind(textarea.value);
-document.getElementById('avgSignal').innerText = output.avgSignal;
-document.getElementById('spectralPower').innerText = output.powerSignal;
-document.getElementById('classification').innerText = output.classification;
-document.getElementById('descAr').innerText = output.descAr;
-document.getElementById('descEn').innerText = output.descEn;
-}
-if (analyzeBtn && textarea) {
-analyzeBtn.addEventListener('click', runAnalysis);
-// تشغيل تلقائي أولي للتحقق
-runAnalysis();
-}
-if (clearBtn && textarea) {
-clearBtn.addEventListener('click', () => {
-textarea.value = '';
-document.getElementById('avgSignal').innerText = "0.00 µV";
-document.getElementById('spectralPower').innerText = "0.00 dB";
-document.getElementById('classification').innerText = "Idle State / وضع الخمول";
-document.getElementById('descAr').innerText = "تم مسح الإشارات بنجاح.";
-document.getElementById('descEn').innerText = "Signals cleared successfully.";
-});
-}
-});
-</script>
+[31.4, -0.9, 25.7, -11.5],</textarea>
+
+        <div class="btn-group">
+            <button id="analyzeBtn">فك تشويش وتحليل الإشارة 🧠</button>
+            <button id="clearBtn" class="btn-clear">تصفية البيانات 🔄</button>
+        </div>
+
+        <div class="report-box">
+            <h3>Advanced Neural Report / التقارير العصبية المتقدمة</h3>
+            <div class="report-grid">
+                <div>Average Cleaned Signal: <span id="avgSignal" style="color: #38bdf8; font-weight: bold;">0.00 µV</span></div>
+                <div>Spectral Power: <span id="spectralPower" style="color: #38bdf8; font-weight: bold;">0.00 dB</span></div>
+            </div>
+            <div style="font-size: 14px; margin-bottom: 5px; text-align: right;">NEURAL CLASSIFICATION / التصنيف العصبي:</div>
+            <div id="classification" style="color: #f43f5e; font-weight: bold; text-align: right; font-size: 15px;">-</div>
+            
+            <div class="analysis-text" id="descAr">
+                التحليل السريري والتقني: قم بالضغط على زر التحليل لفك تشفير الإشارة المدخلة بدقة.
+            </div>
+        </div>
+
+        <!-- بوابة تجديد الحبل الشوكي والمربعات الثلاثة الأصلية -->
+        <div class="spine-section">
+            <div class="spine-title">🌱 بوابة تجديد الحبل الشوكي و Cellular Control / Neuro-Regeneration</div>
+            <div class="spine-sub">مراقبة حية لعمليات طرد الخلايا الميتة، تفعيل الجسر الرقمي، وتوجيه النبضات الفسيولوجية للعضلات</div>
+            <div class="spine-grid">
+                <div class="spine-card">
+                    <div class="spine-card-title">تكامل الخلايا الجذعية (iPSC)</div>
+                    <div class="spine-card-val">64%</div>
+                    <div class="spine-card-desc">نمو نشط</div>
+                    <div class="progress-bar"><div class="progress-fill-1"></div></div>
+                </div>
+                <div class="spine-card">
+                    <div class="spine-card-title">تنظيف وتفكيك الأنسجة الميتة (Scar)</div>
+                    <div class="spine-card-val">76%</div>
+                    <div class="spine-card-desc">مستقر</div>
+                    <div class="progress-bar"><div class="progress-fill-2"></div></div>
+                </div>
+                <div class="spine-card">
+                    <div class="spine-card-title">جسر الإشارات اللاسلكي (FES)</div>
+                    <div class="spine-card-val">99%</div>
+                    <div class="spine-card-desc">تنبيه طارئ مفعل</div>
+                    <div class="progress-bar"><div class="progress-fill-3"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 25px; font-size: 14px; color: #94a3b8; font-weight: bold;">
+            📊 لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)
+        </div>
+        <div style="text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</div>
+        
+        <div class="control-panel">
+            <div class="card">اليد اليمنى</div>
+            <div class="card">اليد اليسرى</div>
+            <div class="card">المشي والحركة</div>
+            <div class="card">طور اللعب السريع</div>
+            <div class="card">التركيز والقراءة</div>
+            <div class="card">طلب قضاء الحاجة</div>
+        </div>
+    </div>
+
+    <script>
+        function processBrainMind(inputData) {
+            let signalArray = [];
+
+            if (typeof inputData === 'string') {
+                try {
+                    const cleanedText = inputData.replace(/[\[\]]/g, '');
+                    signalArray = cleanedText
+                        .split(/[\s,]+/)
+                        .map(item => parseFloat(item.trim()))
+                        .filter(item => !isNaN(item));
+                } catch (e) {
+                    signalArray = [];
+                }
+            } else if (Array.isArray(inputData)) {
+                signalArray = inputData.flat(Infinity).map(item => parseFloat(item)).filter(item => !isNaN(item));
+            }
+
+            if (!Array.isArray(signalArray) || signalArray.length === 0) {
+                return {
+                    classification: "Idle State / وضع الخمول",
+                    descAr: "لا توجد إشارات مدخلة صالحة.",
+                    avgSignal: "0.00 µV",
+                    powerSignal: "0.00 dB"
+                };
+            }
+
+            const maxVal = Math.max(...signalArray);
+            const minVal = Math.min(...signalArray);
+            const sum = signalArray.reduce((a, b) => a + b, 0);
+            const avg = sum / signalArray.length;
+            const len = signalArray.length;
+            const variance = signalArray.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / len;
+            const spectralPowerVal = signalArray.reduce((acc, val) => acc + (val * val), 0) / len;
+
+            let result = {
+                classification: "",
+                descAr: "",
+                avgSignal: `${isNaN(avg) ? '0.00' : avg.toFixed(2)} µV`,
+                powerSignal: `${isNaN(spectralPowerVal) ? '0.00' : spectralPowerVal.toFixed(2)} dB`
+            };
+
+            if (maxVal > 2.0 && avg > 1.4) {
+                result.classification = "Right Hand Movement / حركة اليد اليمنى";
+                result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (Motor Cortex)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بدقة.";
+            } 
+            else if (maxVal > 1.65 && maxVal <= 2.0 && variance < 0.1) {
+                result.classification = "Left Hand Movement / حركة اليد اليسرى";
+                result.descAr = "تم رصد تفجر إشاري نشط متوافق مع القشرة الحركية اليمنى، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق تشويش عظام الجمجمة.";
+            } 
+            else if (avg > 1.5 && len >= 6) {
+                result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
+                result.descAr = "إشارات متزامنة واسعة النطاق ممتدة عبر فصي الدماغ تتوافق مع الأنماط الحركية التلقائية والعفوية؛ مثل الرغبة في المشي، الوقوف، أو تنسيق الأرجل.";
+            } 
+            else if (variance >= 0.08 && maxVal > 1.55) {
+                result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
+                result.descAr = "تذبذبات حسية حركية متعاقبة ذات تباين عالٍ تحاكي ردود الفعل الفورية وعمليات اتخاذ القرار اللحظي المتوافقة تماماً مع ألعاب الفيديو السريعة.";
+            } 
+            else if (avg > 1.35 && avg <= 1.5 && variance < 0.05) {
+                result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
+                result.descAr = "ارتفاع ملحوظ في ترددات وسعة موجات بيتا (Beta Waves) فوق مناطق المعالجة البصرية واللغوية، مما يدل على حالة قراءة نشطة، تحليل نصوص، أو تركيز ذهني عميق.";
+            } 
+            else if (avg >= 1.0 && avg <= 1.35 && minVal < 1.1) {
+                result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
+                result.descAr = "نجاح فك تشفير نبضات بطيئة آتية من الجهاز العصبي الذاتي (Autonomic System)، تحاكي بدقة التنبيهات الحشوية الداخلية للجسم والرغبة في قضاء الحاجة البيولوجية.";
+            } 
+            else {
+                result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
+                result.descAr = "نشاط قشري عام غير مركزي يتوافق مع التيارات العفوية الارتدادية أو الحركات الدقيقة واللاإرادية التي يقوم بها الجسم في وضع الراحة لتعديل الوضعية العامة.";
+            }
+
+            return result;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const textarea = document.getElementById('signalInput');
+
+            if (analyzeBtn && textarea) {
+                analyzeBtn.addEventListener('click', () => {
+                    const output = processBrainMind(textarea.value);
+                    document.getElementById('classification').innerText = output.classification;
+                    document.getElementById('avgSignal').innerText = output.avgSignal;
+                    document.getElementById('spectralPower').innerText = output.powerSignal;
+                    document.getElementById('descAr').innerText = output.descAr;
+                });
+            }
+
+            if (clearBtn && textarea) {
+                clearBtn.addEventListener('click', () => {
+                    textarea.value = '';
+                    document.getElementById('classification').innerText = '-';
+                    document.getElementById('avgSignal').innerText = '0.00 µV';
+                    document.getElementById('spectralPower').innerText = '0.00 dB';
+                    document.getElementById('descAr').innerText = 'تم مسح البيانات بنجاح.';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
