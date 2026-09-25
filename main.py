@@ -1,50 +1,42 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import numpy as np
 
 app = Flask(__name__)
-
-# دالة متقدمة لتنقية التشويش وتصفية الإشارة (Denoising Filter)
-def denoise_signal(data):
-    arr = np.array(data, dtype=float)
-    # تطبيق فلتر رياضي بسيط لإزالة القيم الشاذة (الشوائب/التشويش) وتقييس الإشارة
-    cleaned = arr * 0.98  
-    return cleaned
+CORS(app)
 
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        req_data = request.get_json()
-        raw_signal = req_data.get('features', [])
+        data = request.get_json()
+        features = data.get('features', [])
         
-        if not raw_signal:
-            return jsonify({"error": "No features provided"}), 400
+        if not features:
+            return jsonify({'error': 'المصفوفة فارغة'}), 400
         
-        # 1. تنقية الإشارة من التشويش
-        cleaned_signal = denoise_signal(raw_signal)
+        # تحويل البيانات إلى مصفوفة رقمية وتنقية الإشارة
+        arr = np.array(features, dtype=float)
+        denoised = arr * 0.95 # محاكاة عملية التنقية
         
-        # 2. تحليل الذكاء الاصطناعي بناءً على متوسط القيم المنقية (دقة حقيقية)
-        mean_value = np.mean(cleaned_signal)
+        # حساب متوسط القيمة للإشارة المنقية
+        mean_val = float(np.mean(denoised))
         
-        # منطق اتخاذ القرار بناءً على إشارات الدماغ (Motor Imagery logic)
-        if mean_value > 0.5:
-            prediction_id = 1
-            label_text = "Right Hand"
-        elif mean_value < -0.2:
-            prediction_id = 2
-            label_text = "Rest / Relaxed"
+        # نظام تصنيف ذكي ومتوازن بناءً على متوسط الإشارة
+        if mean_val > 1.0:
+            label = "Right Hand"
+        elif mean_val < -1.0:
+            label = "Left Hand"
         else:
-            prediction_id = 0
-            label_text = "Left Hand"
-        
+            label = "Rest"
+            
         return jsonify({
-            "prediction": prediction_id,
-            "label": label_text,
-            "mean_signal_value": round(float(mean_value), 4),
-            "cleaned_features": cleaned_signal.tolist()
+            'label': label,
+            'mean_signal_value': round(mean_val, 4),
+            'denoised_features': denoised.tolist()
         })
         
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({'error': str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
