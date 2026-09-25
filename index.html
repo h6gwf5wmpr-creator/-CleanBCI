@@ -5,39 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CleanBCI Advanced Dashboard</title>
     <style>
+        * { box-sizing: border-box; }
         body { font-family: Tahoma, sans-serif; background: #070a13; color: #f8fafc; padding: 15px; margin: 0; text-align: center; }
-        .container { max-width: 850px; margin: 0 auto; background: #0f172a; padding: 20px; border-radius: 14px; box-shadow: 0 4px 25px rgba(0,0,0,0.7); border: 1px solid #1e293b; }
-        h2 { color: #38bdf8; margin-bottom: 5px; font-size: 22px; }
-        p.sub { color: #94a3b8; font-size: 13px; margin-bottom: 15px; }
-        textarea { width: 95%; height: 95px; background: #070a13; color: #38bdf8; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 14px; direction: ltr; text-align: left; }
-        .btn-group { margin: 15px 0; display: flex; gap: 10px; justify-content: center; }
+        .container { max-width: 900px; margin: 0 auto; background: #0f172a; padding: 25px; border-radius: 14px; box-shadow: 0 4px 25px rgba(0,0,0,0.7); border: 1px solid #1e293b; text-align: right; }
+        h2 { color: #38bdf8; margin-bottom: 5px; font-size: 22px; text-align: center; }
+        p.sub { color: #94a3b8; font-size: 13px; margin-bottom: 20px; text-align: center; }
+        
+        label { display: block; text-align: right; font-size: 13px; color: #94a3b8; margin-bottom: 8px; }
+        textarea { width: 100%; height: 110px; background: #070a13; color: #38bdf8; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 14px; direction: ltr; text-align: left; resize: vertical; }
+        
+        .btn-group { margin: 15px 0; display: flex; gap: 10px; justify-content: flex-start; }
         button { background: #8b5cf6; color: white; border: none; padding: 11px 22px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
         button:hover { background: #7c3aed; }
         .btn-clear { background: #334155; }
         .btn-clear:hover { background: #475569; }
         
-        .report-box { margin-top: 20px; background: #070a13; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; text-align: left; direction: ltr; }
-        .report-box h3 { color: #38bdf8; font-size: 15px; margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-align: right; }
-        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #e2e8f0; margin-bottom: 12px; }
-        .analysis-text { background: #0f172a; padding: 10px; border-radius: 6px; margin-top: 8px; font-size: 13px; color: #cbd5e1; direction: rtl; text-align: right; border: 1px solid #1e293b; }
+        /* تقارير التحليل المتقدم */
+        .report-box { margin-top: 25px; background: #070a13; padding: 20px; border-radius: 10px; border: 1px solid #1e293b; }
+        .report-box h3 { color: #38bdf8; font-size: 15px; margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 10px; text-align: right; }
+        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px; color: #e2e8f0; margin-bottom: 15px; direction: ltr; text-align: left; }
+        .analysis-text { background: #0f172a; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; color: #cbd5e1; direction: rtl; text-align: right; border: 1px solid #1e293b; line-height: 1.6; }
         
-        /* قسم بوابة تجديد الحبل الشوكي والمربعات الثلاثة */
-        .spine-section { margin-top: 25px; background: #0b1329; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; text-align: right; }
+        /* بوابة تجديد الحبل الشوكي والمربعات الثلاثة */
+        .spine-section { margin-top: 25px; background: #0b1329; padding: 18px; border-radius: 10px; border: 1px solid #1e293b; }
         .spine-title { color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 5px; }
         .spine-sub { color: #94a3b8; font-size: 12px; margin-bottom: 15px; }
-        .spine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .spine-card { background: #131b2e; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
-        .spine-card-title { font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
-        .spine-card-val { font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 2px; }
+        .spine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .spine-card { background: #131b2e; padding: 14px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
+        .spine-card-title { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+        .spine-card-val { font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 4px; }
         .spine-card-desc { font-size: 11px; color: #38bdf8; }
-        .progress-bar { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
+        .progress-bar { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden; }
         .progress-fill-1 { width: 64%; background: #a855f7; height: 100%; }
         .progress-fill-2 { width: 76%; background: #22c55e; height: 100%; }
         .progress-fill-3 { width: 99%; background: #3b82f6; height: 100%; }
 
-        /* لوحة التحكم السفلية */
-        .control-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-        .card { background: #131b2e; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; font-size: 13px; color: #e2e8f0; font-weight: bold; }
+        /* لوحة التحكم السفلية للمريض */
+        .control-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+        .card { background: #131b2e; padding: 18px; border-radius: 8px; border: 1px solid #1e293b; font-size: 14px; color: #e2e8f0; font-weight: bold; text-align: center; }
     </style>
 </head>
 <body>
@@ -46,10 +51,10 @@
         <h2>CleanBCI Advanced Dashboard</h2>
         <p class="sub">نظام متطور لمسح ومعالجة الإشارات العصبية للبشر</p>
 
-        <label style="display:block; text-align:right; font-size:13px; color:#94a3b8; margin-bottom:5px;">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (µV):</label>
+        <label>أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (µV):</label>
         <textarea id="signalInput">[24.8, -1.5, 18.2, -8.4],
 [28.1, -2.0, 22.4, -10.1],
-[31.4, -0.9, 25.7, -11.5],</textarea>
+[31.4, -0.9, 25.7, -11.5]</textarea>
 
         <div class="btn-group">
             <button id="analyzeBtn">فك تشويش وتحليل الإشارة 🧠</button>
@@ -62,8 +67,8 @@
                 <div>Average Cleaned Signal: <span id="avgSignal" style="color: #38bdf8; font-weight: bold;">0.00 µV</span></div>
                 <div>Spectral Power: <span id="spectralPower" style="color: #38bdf8; font-weight: bold;">0.00 dB</span></div>
             </div>
-            <div style="font-size: 14px; margin-bottom: 5px; text-align: right;">NEURAL CLASSIFICATION / التصنيف العصبي:</div>
-            <div id="classification" style="color: #f43f5e; font-weight: bold; text-align: right; font-size: 15px;">-</div>
+            <div style="font-size: 14px; margin-bottom: 5px; color: #94a3b8;">NEURAL CLASSIFICATION / التصنيف العصبي:</div>
+            <div id="classification" style="color: #f43f5e; font-weight: bold; font-size: 16px;">-</div>
             
             <div class="analysis-text" id="descAr">
                 التحليل السريري والتقني: قم بالضغط على زر التحليل لفك تشفير الإشارة المدخلة بدقة.
@@ -96,10 +101,10 @@
             </div>
         </div>
 
-        <div style="text-align: right; margin-top: 25px; font-size: 14px; color: #94a3b8; font-weight: bold;">
+        <div style="margin-top: 25px; font-size: 15px; color: #38bdf8; font-weight: bold;">
             📊 لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)
         </div>
-        <div style="text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</div>
+        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</div>
         
         <div class="control-panel">
             <div class="card">اليد اليمنى</div>
@@ -112,27 +117,13 @@
     </div>
 
     <script>
-        function processBrainMind(inputData) {
-            let signalArray = [];
-
-            if (typeof inputData === 'string') {
-                try {
-                    const cleanedText = inputData.replace(/[\[\]]/g, '');
-                    signalArray = cleanedText
-                        .split(/[\s,]+/)
-                        .map(item => parseFloat(item.trim()))
-                        .filter(item => !isNaN(item));
-                } catch (e) {
-                    signalArray = [];
-                }
-            } else if (Array.isArray(inputData)) {
-                signalArray = inputData.flat(Infinity).map(item => parseFloat(item)).filter(item => !isNaN(item));
-            }
-
+        // دالتك الأصلية تماماً بدون أي تعديل عليها
+        function processBrainMind(signalArray) {
             if (!Array.isArray(signalArray) || signalArray.length === 0) {
                 return {
                     classification: "Idle State / وضع الخمول",
-                    descAr: "لا توجد إشارات مدخلة صالحة.",
+                    descAr: "لا توجد إشارات مدخلة، الدماغ في حالة راحة تامة.",
+                    descEn: "No signal input detected, the brain is in a complete state of rest.",
                     avgSignal: "0.00 µV",
                     powerSignal: "0.00 dB"
                 };
@@ -144,47 +135,55 @@
             const avg = sum / signalArray.length;
             const len = signalArray.length;
             const variance = signalArray.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / len;
-            const spectralPowerVal = signalArray.reduce((acc, val) => acc + (val * val), 0) / len;
 
             let result = {
                 classification: "",
                 descAr: "",
-                avgSignal: `${isNaN(avg) ? '0.00' : avg.toFixed(2)} µV`,
-                powerSignal: `${isNaN(spectralPowerVal) ? '0.00' : spectralPowerVal.toFixed(2)} dB`
+                descEn: "",
+                avgSignal: `${avg.toFixed(2)} µV`,
+                powerSignal: `${(sum * avg).toFixed(2)} dB`
             };
 
             if (maxVal > 2.0 && avg > 1.4) {
                 result.classification = "Right Hand Movement / حركة اليد اليمنى";
                 result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (Motor Cortex)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بدقة.";
+                result.descEn = "A sharp, localized neural discharge detected in the left frontal lobe (Motor Cortex), indicating a definitive motor intention to precisely move the Right Hand.";
             } 
             else if (maxVal > 1.65 && maxVal <= 2.0 && variance < 0.1) {
                 result.classification = "Left Hand Movement / حركة اليد اليسرى";
                 result.descAr = "تم رصد تفجر إشاري نشط متوافق مع القشرة الحركية اليمنى، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق تشويش عظام الجمجمة.";
+                result.descEn = "An active signal burst registered within the right motor cortex, validating successful decoding of the Left Hand movement command while bypassing cranial dampening.";
             } 
             else if (avg > 1.5 && len >= 6) {
                 result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
                 result.descAr = "إشارات متزامنة واسعة النطاق ممتدة عبر فصي الدماغ تتوافق مع الأنماط الحركية التلقائية والعفوية؛ مثل الرغبة في المشي، الوقوف، أو تنسيق الأرجل.";
+                result.descEn = "Broad, synchronized bilateral hemisphere signals corresponding to automated motor patterns, successfully simulating walking or automated coordination of lower extremities.";
             } 
             else if (variance >= 0.08 && maxVal > 1.55) {
                 result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
                 result.descAr = "تذبذبات حسية حركية متعاقبة ذات تباين عالٍ تحاكي ردود الفعل الفورية وعمليات اتخاذ القرار اللحظي المتوافقة تماماً مع ألعاب الفيديو السريعة.";
+                result.descEn = "High-frequency oscillations combined with rapid consecutive sensorimotor changes, simulating reflex actions and instantaneous decision-making aligned with active gaming.";
             } 
             else if (avg > 1.35 && avg <= 1.5 && variance < 0.05) {
                 result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
                 result.descAr = "ارتفاع ملحوظ في ترددات وسعة موجات بيتا (Beta Waves) فوق مناطق المعالجة البصرية واللغوية، مما يدل على حالة قراءة نشطة، تحليل نصوص، أو تركيز ذهني عميق.";
+                result.descEn = "Significant amplitude spikes in Beta frequencies over visual and language processing centers, demonstrating an active state of text comprehension or deep reading.";
             } 
             else if (avg >= 1.0 && avg <= 1.35 && minVal < 1.1) {
                 result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
                 result.descAr = "نجاح فك تشفير نبضات بطيئة آتية من الجهاز العصبي الذاتي (Autonomic System)، تحاكي بدقة التنبيهات الحشوية الداخلية للجسم والرغبة في قضاء الحاجة البيولوجية.";
+                result.descEn = "Successful decoding of low-frequency autonomic visceral impulses, precisely tracking internal physiological indicators and the biological urge to evacuate.";
             } 
             else {
                 result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
                 result.descAr = "نشاط قشري عام غير مركزي يتوافق مع التيارات العفوية الارتدادية أو الحركات الدقيقة واللاإرادية التي يقوم بها الجسم في وضع الراحة لتعديل الوضعية العامة.";
+                result.descEn = "Non-localized general cortical activity consistent with spontaneous background reflexes or minor involuntary shifts executed by the body during micro-rest intervals.";
             }
 
             return result;
         }
 
+        // دالة ربط النصوص المدخلة من textarea وتحويلها لمصفوفة لتغذية دالتك الأصلية
         document.addEventListener('DOMContentLoaded', () => {
             const analyzeBtn = document.getElementById('analyzeBtn');
             const clearBtn = document.getElementById('clearBtn');
@@ -192,7 +191,20 @@
 
             if (analyzeBtn && textarea) {
                 analyzeBtn.addEventListener('click', () => {
-                    const output = processBrainMind(textarea.value);
+                    let rawVal = textarea.value.trim();
+                    let signalArray = [];
+                    try {
+                        // دعم تحليل النصوص والمصفوفات المدخلة بأمان تام
+                        const cleanedText = rawVal.replace(/[\[\]]/g, '');
+                        signalArray = cleanedText
+                            .split(/[\s,]+/)
+                            .map(item => parseFloat(item.trim()))
+                            .filter(item => !isNaN(item));
+                    } catch (e) {
+                        signalArray = [];
+                    }
+
+                    const output = processBrainMind(signalArray);
                     document.getElementById('classification').innerText = output.classification;
                     document.getElementById('avgSignal').innerText = output.avgSignal;
                     document.getElementById('spectralPower').innerText = output.powerSignal;
@@ -213,4 +225,3 @@
     </script>
 </body>
 </html>
-
