@@ -1,12 +1,11 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # 1. أضيفي هذا السطر
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import numpy as np
 import joblib
 
 app = FastAPI()
 
-# 2. أضيفي هذا المقطع أسفل app = FastAPI() مباشرة
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,3 +27,4 @@ def predict(data: EEGInput):
     pred = model.predict(X_scaled)
     label = "Right Hand" if int(pred[0]) == 1 else "Left Hand"
     return {"prediction": int(pred[0]), "label": label}
+
