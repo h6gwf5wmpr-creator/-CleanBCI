@@ -9,6 +9,13 @@
     <style>
         @import url('https://googleapis.com');
         body { font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; }
+        
+        /* حركة أنيميشن مخصصة للمؤشر المرئي وموجات الدماغ */
+        @keyframes brainWave {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+        .wave-bar { animation: brainWave 1s ease-in-out infinite; transform-origin: bottom; }
     </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-6 flex flex-col items-center justify-center selection:bg-indigo-500/30">
@@ -27,12 +34,25 @@
         <div class="space-y-3" dir="ltr">
             <label class="block text-sm font-semibold text-slate-300 text-right" dir="rtl">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (μV):</label>
             <textarea id="eeg-input" 
-                      class="w-full h-24 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-cyan-400 font-mono text-base tracking-wider focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-slate-700"
+                      class="w-full h-20 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-cyan-400 font-mono text-base tracking-wider focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-slate-700"
                       placeholder="[12.4, -4.2, 28.1, -15.6, 32.4, -8.9]"></textarea>
         </div>
 
+        <!-- قائمة الأزرار الجاهزة للتجربة الفورية والمريحة للزوار -->
+        <div class="space-y-2">
+            <span class="block text-xs font-bold text-slate-400"> عينات مصفوفات حقيقية جاهزة للفحص اللحظي:</span>
+            <div class="flex flex-wrap gap-2 text-xs">
+                <button onclick="loadSample([12.4, -4.2, 28.1, -15.6, 32.4, -8.9])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer transition-all">💪 اليد اليمنى</button>
+                <button onclick="loadSample([-18.2, 22.4, -5.1, 19.8, -12.3, 24.1])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer transition-all">✋ اليد اليسرى</button>
+                <button onclick="loadSample([8.1, 14.2, 9.5, 11.3, 13.6, 7.9, 12.1, 10.4])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer transition-all">🏃 المشي والحركة</button>
+                <button onclick="loadSample([-35.2, 42.1, -28.4, 39.7, -41.2, 45.6])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer transition-all">🎮 طور اللعب السريع</button>
+                <button onclick="loadSample([3.1, 4.5, 3.8, 5.2, 4.1, 3.9, 4.7])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer transition-all">📚 التركيز والقراءة</button>
+                <button onclick="loadSample([-2.1, -1.5, -3.4, -2.8, -1.9, -3.1])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer transition-all">🚽 قضاء الحاجة</button>
+            </div>
+        </div>
+
         <!-- أزرار التحكم والعمليات اللحظية -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <button id="btn-analyze" 
                     class="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-[0.98] font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
                 🧠 تحليل وفك تشويش الإشارات
@@ -45,9 +65,20 @@
 
         <!-- تقرير الحالة العصبية المتقدم -->
         <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-5 md:p-6 space-y-4">
-            <h2 class="text-base md:text-lg font-bold text-indigo-400 flex items-center gap-2 border-b border-slate-800/40 pb-2" dir="ltr" class="text-left">
-                ✨ Advanced Neural Report / تقرير الحالة العصبية المتقدم
-            </h2>
+            <div class="flex items-center justify-between border-b border-slate-800/40 pb-2">
+                <h2 class="text-base md:text-lg font-bold text-indigo-400 flex items-center gap-2" dir="ltr">
+                    ✨ Advanced Neural Report
+                </h2>
+                
+                <!-- المؤشر المرئي الجديد وموجات الدماغ التفاعلية (Live Wave) -->
+                <div id="brain-wave-visualizer" class="flex items-end gap-[3px] h-6 px-2 opacity-30 transition-all duration-300">
+                    <div class="wave-bar w-[3px] h-full bg-cyan-400 rounded-full" style="animation-delay: 0.1s;"></div>
+                    <div class="wave-bar w-[3px] h-5 bg-indigo-400 rounded-full" style="animation-delay: 0.4s;"></div>
+                    <div class="wave-bar w-[3px] h-full bg-purple-400 rounded-full" style="animation-delay: 0.2s;"></div>
+                    <div class="wave-bar w-[3px] h-4 bg-cyan-400 rounded-full" style="animation-delay: 0.6s;"></div>
+                    <div class="wave-bar w-[3px] h-full bg-emerald-400 rounded-full" style="animation-delay: 0.3s;"></div>
+                </div>
+            </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- تصنيف الطرف الحركي البشري -->
@@ -90,6 +121,12 @@
 
     <!-- كود المايند والتحكم الديناميكي اللحظي للبشر الحقيقيين -->
     <script>
+        // دالة تحميل العينات وتعبئتها فورياً بالضغط على الأزرار الجاهزة
+        function loadSample(arrayData) {
+            document.getElementById('eeg-input').value = JSON.stringify(arrayData);
+            document.getElementById('btn-analyze').click(); // تنفيذ التحليل تلقائياً للمرونة والجمالية
+        }
+
         function processBrainMind(signalArray) {
             if (!Array.isArray(signalArray) || signalArray.length === 0) {
                 return { classification: "Idle State", descAr: "لا توجد إشارة", descEn: "No signal", avgSignal: "0.00 µV", powerSignal: "0.00 dB" };
@@ -107,38 +144,3 @@
                 descAr: "",
                 descEn: "",
                 avgSignal: `${avg.toFixed(2)} µV`,
-                powerSignal: `${(Math.abs(sum) * 1.5).toFixed(2)} dB`
-            };
-
-            // خريطة الفصل الدقيقة بين الإشارات البشرية الحقيقية بالميكروفولت لمنع الخربطة
-            if (maxVal > 30.0) {
-                result.classification = "Right Hand Movement / حركة اليد اليمنى";
-                result.descAr = "تم رصد تفريغ عصبي حاد وموجه في القشرة الحركية اليسرى يتجاوز 30 ميكروفولت، مما يشير إلى أمر حركي مؤكد ومباشر لتحريك اليد اليمنى.";
-                result.descEn = "A sharp, localized neural discharge exceeding 30 microvolts detected in the left motor cortex, indicating a definitive motor command to move the Right Hand.";
-            } 
-            else if (maxVal > 15.0 && maxVal <= 30.0 && signalRange < 50.0) {
-                result.classification = "Left Hand Movement / حركة اليد اليسرى";
-                result.descAr = "تم رصد تفجر إشاري نشط في القشرة الحركية اليمنى بمدى مستقر، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق الجمجمة.";
-                result.descEn = "An active signal burst registered within the right motor cortex with stable range, validating successful decoding of the Left Hand movement command.";
-            } 
-            else if (signalRange > 70.0) {
-                result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
-                result.descAr = "تذبذبت حاد جداً وعنيف في الإشارات الكهربائية بفارق يتجاوز 70 ميكروفولت بين القمة والقاع، يحاكي استجابات ردود الفعل الفورية أثناء ألعاب الفيديو.";
-                result.descEn = "High-amplitude visual-motor oscillations exceeding 70 microvolts range, perfectly simulating instant reflex actions and rapid decision-making during gaming.";
-            } 
-            else if (avg > 8.0 && len >= 8) {
-                result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
-                result.descAr = "إشارات متزامنة واسعة النطاق وممتدة عبر عدة قنوات بجهد مستمر، تتوافق مع الأنماط الحركية التلقائية والعفوية لتنسيق حركة الأرجل والمشي.";
-                result.descEn = "Broad, multi-channel synchronized signals with continuous voltage, corresponding to automated motor patterns for leg coordination and walking.";
-            } 
-            else if (maxVal > 0 && maxVal <= 6.0 && minVal >= -5.0) {
-                result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
-                result.descAr = "إشارة منخفضة الجهد ومستقرة جداً (موجات بيتا الهادئة بحدود 4 ميكروفولت) فوق مناطق المعالجة البصرية، تدل على القراءة والتركيز الذهني العميق.";
-                result.descEn = "Low-voltage, highly stable signal (Beta waves around 4 microvolts) over visual processing centers, demonstrating active text comprehension and deep focus.";
-            } 
-            else if (avg < 0 && minVal < -1.0) {
-                result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
-                result.descAr = "فك تشفير نبضات بطيئة ذات جهد سالب قادمة من قاع الدماغ (الجهاز العصبي الذاتي)، تحاكي بدقة التنبيهات الحشوية الداخلية والرغبة في قضاء الحاجة.";
-                result.descEn = "Successful decoding of low-frequency, negative-voltage autonomic visceral impulses, tracking internal physiological indicators and the urge to evacuate.";
-            } 
-            else {
