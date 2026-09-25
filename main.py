@@ -22,9 +22,16 @@ class EEGInput(BaseModel):
 
 @app.post("/predict")
 def predict(data: EEGInput):
-    X = np.array(data.features).reshape(1, -1)
+    input_features = list(data.features)
+    
+    # الحل الجذري: مطابقة حجم البيانات مع ما يتوقعه الـ Scaler (64 ميزة)
+    if len(input_features) < 64:
+        input_features = input_features + [0.0] * (64 - len(input_features))
+    elif len(input_features) > 64:
+        input_features = input_features[:64]
+        
+    X = np.array([input_features])
     X_scaled = scaler.transform(X)
     pred = model.predict(X_scaled)
     label = "Right Hand" if int(pred[0]) == 1 else "Left Hand"
     return {"prediction": int(pred[0]), "label": label}
-
