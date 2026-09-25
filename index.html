@@ -24,36 +24,38 @@
         }
         .dashboard-card {
             background-color: var(--card-bg);
-            padding: 25px;
+            padding: 30px;
             border-radius: 16px;
             width: 100%;
-            max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: 550px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
         h2 {
             text-align: center;
             margin-bottom: 5px;
+            color: #f1f5f9;
         }
         .subtitle {
             text-align: center;
             color: #94a3b8;
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
+            color: #cbd5e1;
         }
         textarea {
             width: 100%;
-            height: 80px;
+            height: 90px;
             background: #0f172a;
             color: #fff;
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: 10px;
-            font-size: 16px;
+            padding: 12px;
+            font-size: 15px;
             resize: vertical;
             box-sizing: border-box;
         }
@@ -62,7 +64,7 @@
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             color: white;
             border: none;
-            padding: 12px;
+            padding: 14px;
             border-radius: 8px;
             font-size: 16px;
             font-weight: bold;
@@ -76,16 +78,27 @@
         .result-box {
             background: #0f172a;
             border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
             display: none;
         }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
             color: #38bdf8;
-            margin: 5px 0 0 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+        }
+        .result-detail {
+            margin: 8px 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .result-detail span {
+            font-weight: bold;
+            color: #e2e8f0;
         }
     </style>
 </head>
@@ -93,20 +106,22 @@
 
 <div class="dashboard-card">
     <h2>CleanBCI Dashboard</h2>
-    <div class="subtitle">نظام تحليل إشارات الدماغ الذكية</div>
+    <div class="subtitle">نظام تحليل إشارات الدماغ الذكية غير الجراحي</div>
     
     <div style="margin-bottom: 15px;">
-        <label>مصفوفة القواطع والخصائص:</label>
-        <textarea id="eegInput" placeholder="اكتب المصفوفة هنا، مثلاً: [-0.3, -1.2, 0.8]"></textarea>
+        <label>أدخل مصفوفة إشارات الدماغ (EEG Array):</label>
+        <textarea id="eegInput" placeholder="مثال: [4.25, -2.12, 6.88, -1.45, 3.12]"></textarea>
     </div>
     
     <button class="btn-action" onclick="sendDataToAPI()">تحليل الإشارات الآن 🧠</button>
     
-    <div id="loading" style="text-align:center; color:var(--primary); margin-top:10px; display:none;">جاري التحليل...</div>
+    <div id="loading" style="text-align:center; color:var(--primary); margin-top:15px; display:none; font-weight: bold;">جاري تنقية الإشارات وتحليلها...</div>
     
     <div id="resultContainer" class="result-box">
-        <strong>✨ النتيجة:</strong>
-        <pre id="apiResult"></pre>
+        <div class="result-title">✨ تقرير التحليل المفصل / Analysis Report</div>
+        <div class="result-detail" id="resLabel"></div>
+        <div class="result-detail" id="resMean"></div>
+        <div class="result-detail" id="resExplanation"></div>
     </div>
 </div>
 
@@ -114,8 +129,11 @@
 async function sendDataToAPI() {
     const inputVal = document.getElementById('eegInput').value;
     const resultContainer = document.getElementById('resultContainer');
-    const apiResult = document.getElementById('apiResult');
     const loading = document.getElementById('loading');
+    
+    const resLabel = document.getElementById('resLabel');
+    const resMean = document.getElementById('resMean');
+    const resExplanation = document.getElementById('resExplanation');
     
     resultContainer.style.display = 'none';
     loading.style.display = 'block';
@@ -128,11 +146,32 @@ async function sendDataToAPI() {
             body: JSON.stringify({ features: parsedData })
         });
         const data = await response.json();
-        apiResult.textContent = JSON.stringify(data, null, 2);
+        
+        // ترجمة النتائج وتنسيقها بشكل احترافي ومبسط للمستخدم
+        let arabicLabel = "";
+        let explanationText = "";
+        
+        if (data.label.includes("Right Hand")) {
+            arabicLabel = "حركة اليد اليمنى (Right Hand)";
+            explanationText = "يشير هذا النمط العصبي إلى تخيل أو تنفيذ حركة باليد اليمنى، حيث تظهر النشاطات الكهربائية في القشرة الحركية للجانب الأيسر من الدماغ.";
+        } else if (data.label.includes("Rest")) {
+            arabicLabel = "حالة راحة واسترخاء (Rest / Relaxed)";
+            explanationText = "الإشارات مستقرة وتدل على عدم وجود حركة، وهي الحالة الطبيعية للدماغ أثناء الهدوء وانعدام التركيز الحركي النشط.";
+        } else {
+            arabicLabel = "حركة اليد اليسرى (Left Hand)";
+            explanationText = "يشير هذا النمط العصبي إلى تخيل أو تنفيذ حركة باليد اليسرى، المرتبطة بنشاط القشرة الحركية في الجانب الأيمن من الدماغ.";
+        }
+        
+        resLabel.innerHTML = `<span>التصنيف (Classification):</span> ${arabicLabel} (${data.label})`;
+        resMean.innerHTML = `<span>متوسط قوة الإشارة المنقية (Mean Signal):</span> ${data.mean_signal_value}`;
+        resExplanation.innerHTML = `<span>الشرح الطبي/التقني:</span> ${explanationText}`;
+        
         resultContainer.style.display = 'block';
     } catch (error) {
-        apiResult.textContent = "خطأ: تأكد من صحة كتابة المصفوفة (مثال: [-0.3, -1.2, 0.8])\nالتفاصيل: " + error;
         resultContainer.style.display = 'block';
+        resLabel.innerHTML = `<span style="color:#ef4444;">خطأ في المدخلات:</span> تأكد من كتابة المصفوفة بشكل صحيح بالأقواس والأرقام (مثال: [1.2, -0.5, 3.4])`;
+        resMean.innerHTML = "";
+        resExplanation.innerHTML = `التفاصيل التقنية: ${error}`;
     } finally {
         loading.style.display = 'none';
     }
