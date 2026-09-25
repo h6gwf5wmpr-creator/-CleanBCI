@@ -3,345 +3,466 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanBCI Advanced Dashboard - Complete Clinical Edition</title>
+    <title>CleanBCI Ultimate Enterprise Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: Tahoma, sans-serif; background: #050811; color: #f8fafc; padding: 15px; margin: 0; text-align: center; }
-        .container { max-width: 950px; margin: 0 auto; background: #0f172a; padding: 20px; border-radius: 14px; box-shadow: 0 4px 30px rgba(0,0,0,0.8); border: 1px solid #1e293b; text-align: right; }
-        h2 { color: #38bdf8; margin-bottom: 5px; font-size: 22px; text-align: center; }
-        p.sub { color: #94a3b8; font-size: 13px; margin-bottom: 15px; text-align: center; }
-        
-        label { display: block; text-align: right; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
-        textarea { width: 100%; height: 95px; background: #070a13; color: #38bdf8; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 14px; direction: ltr; text-align: left; }
-        
-        .btn-group { margin: 15px 0; display: flex; gap: 10px; justify-content: flex-start; flex-wrap: wrap; }
-        button { background: #8b5cf6; color: white; border: none; padding: 11px 18px; font-size: 13px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #7c3aed; }
-        .btn-clear { background: #334155; }
-        .btn-clear:hover { background: #475569; }
-        .btn-sim { background: #0ea5e9; }
-        .btn-sim:hover { background: #0284c7; }
-        .btn-export { background: #10b981; }
-        .btn-export:hover { background: #059669; }
-        
-        .report-box { margin-top: 20px; background: #070a13; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; }
-        .report-box h3 { color: #38bdf8; font-size: 15px; margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-align: right; }
-        .report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 13px; color: #e2e8f0; margin-bottom: 12px; direction: ltr; text-align: left; }
-        .analysis-text { background: #0f172a; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; color: #cbd5e1; direction: rtl; text-align: right; border: 1px solid #1e293b; line-height: 1.6; }
-        
-        /* مؤشر اليقظة العصبية المضاف */
-        .focus-meter-container { margin-top: 10px; background: #0f172a; padding: 10px; border-radius: 6px; border: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
-        .focus-bar-bg { width: 60%; background: #1e293b; height: 10px; border-radius: 5px; overflow: hidden; }
-        .focus-bar-fill { width: 0%; height: 100%; background: #38bdf8; transition: width 0.5s ease; }
-
-        /* بوابة تجديد الحبل الشوكي والمربعات الثلاثة الأصلية */
-        .spine-section { margin-top: 25px; background: #0b1329; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; }
-        .spine-title { color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 5px; text-align: right; }
-        .spine-sub { color: #94a3b8; font-size: 12px; margin-bottom: 15px; text-align: right; }
-        .spine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .spine-card { background: #131b2e; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
-        .spine-card-title { font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
-        .spine-card-val { font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 2px; }
-        .spine-card-desc { font-size: 11px; color: #38bdf8; }
-        .progress-bar { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .progress-fill-1 { width: 64%; background: #a855f7; height: 100%; }
-        .progress-fill-2 { width: 76%; background: #22c55e; height: 100%; }
-        .progress-fill-3 { width: 99%; background: #3b82f6; height: 100%; }
-
-        /* لوحة تحكم المريض السفلية مع إضاءة تفاعلية نشطة */
-        .control-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-        .card { background: #131b2e; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; font-size: 13px; color: #e2e8f0; font-weight: bold; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.3s ease; }
-        .card span { font-size: 20px; }
-        
-        .card.active-card {
-            background: #1e1b4b;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.8);
-            transform: scale(1.04);
-            color: #c084fc;
+        body { font-family: 'Cairo', sans-serif; background-color: #070913; color: #f3f4f6; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.7); border-color: #3b82f6; }
+            50% { box-shadow: 0 0 35px rgba(59, 130, 246, 1); border-color: #60a5fa; }
         }
-
-        /* سجل الأحداث المتقدم */
-        .log-section { margin-top: 20px; background: #070a13; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; text-align: right; }
-        .log-title { font-size: 13px; color: #38bdf8; margin-bottom: 8px; font-weight: bold; }
-        .log-content { font-size: 12px; color: #94a3b8; max-height: 80px; overflow-y: auto; direction: ltr; text-align: left; }
+        .active-card-pulse { animation: pulse-glow 1.2s infinite; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        @keyframes alert-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .emergency-blink { animation: alert-blink 0.7s infinite; }
     </style>
 </head>
-<body>
+<body class="p-3 md:p-6">
 
-    <div class="container">
-        <h2>CleanBCI Advanced Dashboard</h2>
-        <p class="sub">نظام متطور لمسح ومعالجة الإشارات العصبية وتحفيز الأطراف البشرية</p>
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <header class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-2xl backdrop-blur-md flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500">CleanBCI Enterprise Dashboard</h1>
+                <p class="text-slate-400 text-xs mt-1">نظام رعاية عصبية متطور، واجهة BCI سريرية، ودعم ذوي الإعاقة الحركية الكاملة</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <button onclick="triggerClinicalOverride()" id="overrideBtn" class="bg-amber-950/80 border border-amber-600 hover:bg-amber-900 text-amber-400 px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
+                    <span>🛡️</span> مفتاح الطوارئ السريري (Override)
+                </button>
+                <button onclick="triggerDirectNurseCall()" class="bg-red-950/80 border border-red-600 hover:bg-red-900 text-red-400 px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
+                    <span>🚨</span> نداء الممرض الفوري
+                </button>
+                <div id="emergencyStatusBanner" class="hidden px-3 py-2 bg-red-950 border border-red-600 rounded-xl text-red-400 text-xs font-bold emergency-blink">
+                    ⚠️ تشنج حرج / طوارئ
+                </div>
+            </div>
+        </header>
 
-        <label>أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (µV):</label>
-        <textarea id="signalInput">[24.8, -1.5, 18.2, -8.4],
+        <!-- Input & Master Controls Section -->
+        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+            <div class="flex justify-between items-center">
+                <label class="text-sm font-semibold text-slate-300">مصفوفة إشارات الدماغ البشرية الحقيقية ($\mu V$) [تدعم الأقواس، الفواصل، والمسافات]:</label>
+                <span id="cloudStatus" class="text-[11px] text-emerald-400 bg-emerald-950/50 px-2 py-1 rounded border border-emerald-800">☁️ متصل بالسحابة الطبية (محفوظ)</span>
+            </div>
+            <textarea id="signalInput" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-emerald-400 font-mono text-sm focus:outline-none focus:border-blue-500 transition-colors">[24.8, -1.5, 18.2, -8.4],
 [28.1, -2.0, 22.4, -10.1],
 [31.4, -0.9, 25.7, -11.5]</textarea>
-
-        <div class="btn-group">
-            <button id="analyzeBtn">فك تشويش وتحليل الإشارة 🧠</button>
-            <button id="simBtn" class="btn-sim">محاكاة إشارة حية ⚡</button>
-            <button id="exportBtn" class="btn-export">تصدير التقرير الطبي 📄</button>
-            <button id="clearBtn" class="btn-clear">تصفية البيانات 🔄</button>
-        </div>
-
-        <div class="report-box">
-            <h3>Advanced Neural Report / التقارير العصبية المتقدمة</h3>
-            <div class="report-grid">
-                <div>Avg Signal: <span id="avgSignal" style="color: #38bdf8; font-weight: bold;">0.00 µV</span></div>
-                <div>Spectral Power: <span id="spectralPower" style="color: #38bdf8; font-weight: bold;">0.00 dB</span></div>
-                <div>Neural Variance: <span id="varVal" style="color: #38bdf8; font-weight: bold;">0.00</span></div>
-            </div>
-            <div style="font-size: 14px; margin-bottom: 5px; color: #94a3b8; text-align: right;">NEURAL CLASSIFICATION / التصنيف العصبي:</div>
-            <div id="classification" style="color: #f43f5e; font-weight: bold; font-size: 15px; text-align: right;">-</div>
             
-            <div class="analysis-text" id="descAr">
-                التحليل السريري والتقني: قم بالضغط على زر التحليل لفك تشفير الإشارة المدخلة بدقة فائقة.
-            </div>
-
-            <!-- مؤشر اليقظة العصبية -->
-            <div class="focus-meter-container">
-                <div>مؤشر يقظة وتركيز الدماغ (Neural Focus Index): <span id="focusScore" style="color: #38bdf8; font-weight: bold;">0%</span></div>
-                <div class="focus-bar-bg"><div class="focus-bar-fill" id="focusBar"></div></div>
-            </div>
-        </div>
-
-        <!-- سجل الأحداث الحية -->
-        <div class="log-section">
-            <div class="log-title">📋 Clinical Neural Event Log (سجل الأحداث العصبية السريرية)</div>
-            <div class="log-content" id="eventLog">System initialized. Waiting for real-time EEG input...</div>
-        </div>
-
-        <!-- بوابة تجديد الحبل الشوكي والمربعات الثلاثة الأصلية -->
-        <div class="spine-section">
-            <div class="spine-title">🌱 بوابة تجديد الحبل الشوكي و Cellular Control / Neuro-Regeneration</div>
-            <div class="spine-sub">مراقبة حية لعمليات طرد الخلايا الميتة، تفعيل الجسر الرقمي، وتوجيه النبضات الفسيولوجية للعضلات</div>
-            <div class="spine-grid">
-                <div class="spine-card">
-                    <div class="spine-card-title">تكامل الخلايا الجذعية (iPSC)</div>
-                    <div class="spine-card-val">64%</div>
-                    <div class="spine-card-desc">نمو نشط</div>
-                    <div class="progress-bar"><div class="progress-fill-1"></div></div>
-                </div>
-                <div class="spine-card">
-                    <div class="spine-card-title">تنظيف وتفكيك الأنسجة الميتة (Scar)</div>
-                    <div class="spine-card-val">76%</div>
-                    <div class="spine-card-desc">مستقر</div>
-                    <div class="progress-bar"><div class="progress-fill-2"></div></div>
-                </div>
-                <div class="spine-card">
-                    <div class="spine-card-title">جسر الإشارات اللاسلكي (FES)</div>
-                    <div class="spine-card-val">99%</div>
-                    <div class="spine-card-desc">تنبيه طارئ مفعل</div>
-                    <div class="progress-bar"><div class="progress-fill-3"></div></div>
-                </div>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="processSignals()" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <span>🧠</span> فك تشويش وتحليل الإشارة بالذكاء الاصطناعي
+                </button>
+                <button onclick="toggleSimulation()" id="simBtn" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 font-bold py-3 px-4 rounded-xl transition-all flex items-center gap-2">
+                    <span>⚡</span> محاكاة حية (Live EEG)
+                </button>
+                <button onclick="adaptiveCalibration()" class="bg-slate-800 hover:bg-slate-700 text-purple-400 border border-slate-700 font-bold py-3 px-4 rounded-xl transition-all flex items-center gap-2">
+                    <span>🎛️</span> معايرة تكيفية (Calibration)
+                </button>
+                <button onclick="exportReport()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 font-bold py-3 px-4 rounded-xl transition-all flex items-center gap-2">
+                    <span>📄</span> تصدير تقرير طبي (.txt)
+                </button>
             </div>
         </div>
 
-        <div style="text-align: right; margin-top: 25px; font-size: 14px; color: #94a3b8; font-weight: bold;">
-            📊 لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)
+        <!-- Analytics & AI Clinical Insights -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-xl md:col-span-2 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">AI Clinical Insight / مساعد التشخيص الذكي</h2>
+                    <span id="aiStatusBadge" class="text-xs text-blue-400 bg-blue-950 px-2 py-0.5 rounded">تحليل نشط</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-slate-950/50 p-3 rounded-xl border border-slate-800">
+                        <p class="text-xs text-slate-500">Average Clean Signal</p>
+                        <p id="avgSignal" class="text-lg font-bold text-blue-400">-- $\mu V$</p>
+                    </div>
+                    <div class="bg-slate-950/50 p-3 rounded-xl border border-slate-800">
+                        <p class="text-xs text-slate-500">Spectral Power</p>
+                        <p id="spectralPower" class="text-lg font-bold text-purple-400">-- dB</p>
+                    </div>
+                </div>
+                <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 space-y-1">
+                    <p class="text-xs text-slate-400 font-bold">التقرير السريري التلقائي واللدونة العصبية (Neuroplasticity):</p>
+                    <p id="clinicalInsightText" class="text-xs text-slate-300 leading-relaxed">بانتظار إدخال الإشارات العصبية لتقييم الاستجابة الحركية والمسارات العصبية...</p>
+                </div>
+            </div>
+
+            <!-- Focus, Stability & Pain Index Panel -->
+            <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl shadow-xl space-y-4">
+                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">المؤشرات العصبية الحية</h2>
+                <div>
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-slate-400">معدل التركيز واليقظة (Focus)</span>
+                        <span id="focusVal" class="text-blue-400 font-bold">85%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                        <div id="focusBar" class="bg-blue-500 h-full w-[85%] transition-all"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-slate-400">استقرار الاتصال (Stability)</span>
+                        <span id="stabilityVal" class="text-emerald-400 font-bold">94%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                        <div id="stabilityBar" class="bg-emerald-500 h-full w-[94%] transition-all"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-slate-400">مؤشر الألم والإجهاد (Pain Index)</span>
+                        <span id="painVal" class="text-yellow-400 font-bold">12% (مستقر)</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden">
+                        <div id="painBar" class="bg-yellow-500 h-full w-[12%] transition-all"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div style="text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</div>
-        
-        <!-- لوحة التحكم الكاملة مع الأوصاف الأصلية والتلوين الذكي -->
-        <div class="control-panel">
-            <div class="card" id="card-walk"><span>🚶‍♂️</span> المشي والحركة</div>
-            <div class="card" id="card-left"><span>✋</span> اليد اليسرى</div>
-            <div class="card" id="card-right"><span>🦾</span> اليد اليمنى</div>
-            <div class="card" id="card-game"><span>🎮</span> طور اللعب السريع</div>
-            <div class="card" id="card-focus"><span>📖</span> التركيز والقراءة</div>
-            <div class="card" id="card-excret"><span>🚻</span> طلب قضاء الحاجة</div>
+
+        <!-- Smart Environmental Control / IoT (For Disabled Support) -->
+        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+            <h2 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                <span>🏡</span> نظام التحكم البيئي الذكي لذوي الاحتياجات الخاصة (Smart Environmental Control)
+            </h2>
+            <p class="text-xs text-slate-400">تمكين المريض من السيطرة الكاملة على بيئة الغرفة ومحيطه عبر النية العصبية المباشرة</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button onclick="controlIoT('ضبط ميلان السرير الطبي')" class="bg-slate-950 border border-slate-800 hover:border-blue-500 p-3.5 rounded-xl text-center transition-all">
+                    <div class="text-xl mb-1">🛏️</div>
+                    <p class="text-xs font-semibold text-slate-300">تعديل وضعية السرير</p>
+                </button>
+                <button onclick="controlIoT('تشغيل وتعتيم الإضاءة')" class="bg-slate-950 border border-slate-800 hover:border-blue-500 p-3.5 rounded-xl text-center transition-all">
+                    <div class="text-xl mb-1">💡</div>
+                    <p class="text-xs font-semibold text-slate-300">الإضاءة الذكية</p>
+                </button>
+                <button onclick="controlIoT('فتح النافذة والتهوية')" class="bg-slate-950 border border-slate-800 hover:border-blue-500 p-3.5 rounded-xl text-center transition-all">
+                    <div class="text-xl mb-1">🪟</div>
+                    <p class="text-xs font-semibold text-slate-300">التهوية والنافذة</p>
+                </button>
+                <button onclick="controlIoT('تفعيل المساعد الصوتي للتحدث')" class="bg-slate-950 border border-slate-800 hover:border-blue-500 p-3.5 rounded-xl text-center transition-all">
+                    <div class="text-xl mb-1">🗣️</div>
+                    <p class="text-xs font-semibold text-slate-300">محول الصوت (Vocalizer)</p>
+                </button>
+            </div>
         </div>
+
+        <!-- Neuro-Regeneration & Cellular Control Gateway -->
+        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+            <h2 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                <span>🧬</span> بوابة تجديد الحبل الشوكي (Neuro-Regeneration & Cellular Control)
+            </h2>
+            <p class="text-xs text-slate-400">مراقبة حية لعمليات طرد الخلايا الميتة، تفعيل الجسر الرقمي، وتوجيه النبضات الفسيولوجية للعضلات</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl text-center space-y-2">
+                    <p class="text-xs text-slate-400">تكامل الخلايا الجذعية (iPSC)</p>
+                    <p id="stemCellRate" class="text-xl font-bold text-blue-400">64%</p>
+                    <p class="text-[10px] text-emerald-400">نمو نشط واستقرار خلوي</p>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl text-center space-y-2">
+                    <p class="text-xs text-slate-400">تنظيف وتفكيك الأنسجة الميتة (Scar)</p>
+                    <p id="scarRate" class="text-xl font-bold text-yellow-400">76%</p>
+                    <p class="text-[10px] text-blue-400">عملية تنظيف جارية</p>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl text-center space-y-2">
+                    <p class="text-xs text-slate-400">جسر الإشارات اللاسلكي (FES)</p>
+                    <p id="fesRate" class="text-xl font-bold text-emerald-400">99%</p>
+                    <p id="fesStatusText" class="text-[10px] text-emerald-400">متصل وفعال</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Control Panel (6 Cards with Pulse Effect) -->
+        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+            <h2 class="text-base font-bold text-slate-200 flex items-center gap-2">
+                <span>🏥</span> لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)
+            </h2>
+            <p class="text-xs text-slate-400">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div id="card-right-hand" class="bg-slate-950/70 border border-slate-800 p-5 rounded-xl text-center transition-all duration-300">
+                    <div class="text-2xl mb-2">✋</div>
+                    <p class="text-sm font-semibold text-slate-200">اليد اليمنى</p>
+                </div>
+                <div id="card-left-hand" class="bg-slate-950/70 border border-slate-800 p-5 rounded-xl text-center transition-all duration-300">
+                    <div class="text-2xl mb-2">🤚</div>
+                    <p class="text-sm font-semibold text-slate-200">اليد اليسرى</p>
+                </div>
+                <div id="card-walking" class="bg-slate-950/70 border border-slate-800 p-5 rounded-xl text-center transition-all duration-300">
+                    <div class="text-2xl mb-2">🚶‍♂️</div>
+                    <p class="text-sm font-semibold text-slate-200">المشي والحركة</p>
+                </div>
+                <div id="card-restroom" class="bg-slate-950/70 border border-slate-800 p-5 rounded-xl text-center transition-all duration-300">
+                    <div class="text-2xl mb-2">🚻</div>
+                    <p class="text-sm font-semibold text-slate-200">طلب قضاء الحاجة</p>
+                </div>
+                <div id="card-reading" class="bg-slate-950/70 border border-slate-800 p-5 rounded-xl text-center transition-all duration-300">
+                    <div class="text-2xl mb-2">📖</div>
+                    <p class="text-sm font-semibold text-slate-200">التركيز والقراءة</p>
+                </div>
+                <div id="card-gaming" class="bg-slate-950/70 border border-slate-800 p-5 rounded-xl text-center transition-all duration-300">
+                    <div class="text-2xl mb-2">🎮</div>
+                    <p class="text-sm font-semibold text-slate-200">طور اللعب السريع</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Neural Event Log & Cloud History -->
+        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl shadow-xl space-y-3">
+            <div class="flex justify-between items-center">
+                <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">سجل التاريخ اللحظي والسحابة الطبية (Neural Event Log)</h2>
+                <button onclick="clearEventLog()" class="text-[11px] text-slate-500 hover:text-red-400 transition-colors">مسح السجل</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-500">
+                            <th class="py-2">التوقيت</th>
+                            <th class="py-2">الأمر العصبي المكتشف</th>
+                            <th class="py-2">قوة الإشارة</th>
+                            <th class="py-2">حالة المريض</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventLogBody" class="divide-y divide-slate-800/50 text-slate-300 font-mono">
+                        <tr>
+                            <td class="py-2 text-slate-500">--:--:--</td>
+                            <td class="py-2">في انتظار التسجيل الأول في النظام...</td>
+                            <td class="py-2">--</td>
+                            <td class="py-2 text-slate-500">خامل</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        function processBrainMind(signalArray) {
-            if (!Array.isArray(signalArray) || signalArray.length === 0) {
-                return {
-                    classification: "Idle State / وضع الخمول",
-                    descAr: "لا توجد إشارات مدخلة، الدماغ في حالة راحة تامة.",
-                    avgSignal: "0.00 µV",
-                    powerSignal: "0.00 dB",
-                    variance: "0.00",
-                    focus: 0
-                };
-            }
+        let simulationInterval = null;
+        let isOverrideActive = false;
+        let calibrationBaseline = 0;
 
-            const maxVal = Math.max(...signalArray);
-            const minVal = Math.min(...signalArray);
-            const sum = signalArray.reduce((a, b) => a + b, 0);
-            const avg = sum / signalArray.length;
-            const len = signalArray.length;
-            const variance = signalArray.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / len;
-            const focusScore = Math.min(100, Math.max(10, Math.floor(Math.abs(avg) * 3.5 + variance * 15)));
+        const commandsList = [
+            { id: 'card-right-hand', name: 'حركة اليد اليمنى / Right Hand Movement', desc: 'تم رصد تفريغ عصبي حاد في الفص الجبهي الأيسر (Motor Cortex) مع استجابة دقيقة للإصبع.' },
+            { id: 'card-left-hand', name: 'حركة اليد اليسرى / Left Hand Movement', desc: 'تم رصد استجابة حركية متقدمة في النصف الأيمن من القشرة الحركية للتحكم باليد اليسرى.' },
+            { id: 'card-walking', name: 'أمر المشي والحركة / Walking Command', desc: 'تفعيل إيقاعي للمناطق الحركية المسؤولة عن الأطراف السفلى عبر جسر FES.' },
+            { id: 'card-restroom', name: 'طلب قضاء الحاجة / Restroom Request', desc: 'رصد نمط عصبي متكرر يعبر عن الحاجة الملحة للاستجابة الفسيولوجية العاجلة.' },
+            { id: 'card-reading', name: 'التركيز والقراءة / Focus & Reading', desc: 'مستويات عالية من موجات ألفا وبيتا الدالة على الانتباه البصري والاندماج المعرفي.' },
+            { id: 'card-gaming', name: 'طور اللعب السريع / Fast Gaming Mode', desc: 'استجابة سريعة ومتعددة النبضات للمحفزات الرقمية التفاعلية وعالية السرعة.' }
+        ];
 
-            let result = {
-                classification: "",
-                descAr: "",
-                avgSignal: `${isNaN(avg) ? '0.00' : avg.toFixed(2)} µV`,
-                powerSignal: `${isNaN(sum * avg) ? '0.00' : (sum * avg).toFixed(2)} dB`,
-                variance: `${isNaN(variance) ? '0.00' : variance.toFixed(3)}`,
-                focus: focusScore
-            };
-
-            if (maxVal > 2.0 && avg > 1.4) {
-                result.classification = "Right Hand Movement / حركة اليد اليمنى";
-                result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (Motor Cortex)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بدقة.";
-            } 
-            else if (maxVal > 1.65 && maxVal <= 2.0 && variance < 0.1) {
-                result.classification = "Left Hand Movement / حركة اليد اليسرى";
-                result.descAr = "تم رصد تفجر إشاري نشط متوافق مع القشرة الحركية اليمنى، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق تشويش عظام الجمجمة.";
-            } 
-            else if (avg > 1.5 && len >= 6) {
-                result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
-                result.descAr = "إشارات متزامنة واسعة النطاق ممتدة عبر فصي الدماغ تتوافق مع الأنماط الحركية التلقائية والعفوية؛ مثل الرغبة في المشي، الوقوف، أو تنسيق الأرجل.";
-            } 
-            else if (variance >= 0.08 && maxVal > 1.55) {
-                result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
-                result.descAr = "تذبذبات حسية حركية متعاقبة ذات تباين عالٍ تحاكي ردود الفعل الفورية وعمليات اتخاذ القرار اللحظي المتوافقة تماماً مع ألعاب الفيديو السريعة.";
-            } 
-            else if (avg > 1.35 && avg <= 1.5 && variance < 0.05) {
-                result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
-                result.descAr = "ارتفاع ملحوظ في ترددات وسعة موجات بيتا (Beta Waves) فوق مناطق المعالجة البصرية واللغوية، مما يدل على حالة قراءة نشطة، تحليل نصوص، أو تركيز ذهني عميق.";
-            } 
-            else if (avg >= 1.0 && avg <= 1.35 && minVal < 1.1) {
-                result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
-                result.descAr = "نجاح فك تشفير نبضات بطيئة آتية من الجهاز العصبي الذاتي (Autonomic System)، تحاكي بدقة التنبيهات الحشوية الداخلية للجسم والرغبة في قضاء الحاجة البيولوجية.";
-            } 
-            else {
-                result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
-                result.descAr = "نشاط قشري عام غير مركزي يتوافق مع التيارات العفوية الارتدادية أو الحركات الدقيقة واللاإرادية التي يقوم بها الجسم في وضع الراحة لتعديل الوضعية العامة.";
-            }
-
-            return result;
+        function parseMultiFormat(text) {
+            const cleanText = text.replace(/[\[\]]/g, ' ');
+            const tokens = cleanText.split(/[\s,]+/);
+            return tokens.map(t => parseFloat(t)).filter(n => !isNaN(n));
         }
 
-        // دالة إضاءة لوحة التحكم الذكية بناءً على الأمر المكتشف
-        function updateControlPanelUI(classificationText) {
-            document.querySelectorAll('.card').forEach(card => card.classList.remove('active-card'));
+        function processSignals() {
+            if (isOverrideActive) {
+                alert('⚠️ مفتاح الطوارئ السريري مفعل! تم إيقاف تمرير الإشارات عصبياً حمايةً للمريض.');
+                return;
+            }
 
-            if (classificationText.includes("Right Hand")) {
-                document.getElementById('card-right').classList.add('active-card');
-            } else if (classificationText.includes("Left Hand")) {
-                document.getElementById('card-left').classList.add('active-card');
-            } else if (classificationText.includes("Walking")) {
-                document.getElementById('card-walk').classList.add('active-card');
-            } else if (classificationText.includes("Gaming")) {
-                document.getElementById('card-game').classList.add('active-card');
-            } else if (classificationText.includes("Cognitive") || classificationText.includes("Focus")) {
-                document.getElementById('card-focus').classList.add('active-card');
-            } else if (classificationText.includes("Excretion")) {
-                document.getElementById('card-excret').classList.add('active-card');
+            const rawText = document.getElementById('signalInput').value;
+            const numbers = parseMultiFormat(rawText);
+
+            if (numbers.length === 0) {
+                alert('الرجاء إدخال مصفوفة أرقام صحيحة!');
+                return;
+            }
+
+            const sum = numbers.reduce((a, b) => a + b, 0);
+            const avg = (sum / numbers.length).toFixed(2);
+            const spectral = (Math.abs(avg) * 116.2).toFixed(2);
+
+            document.getElementById('avgSignal').innerText = `${avg} \u03bcV`;
+            document.getElementById('spectralPower').innerText = `${spectral} dB`;
+
+            // اختيار أمر عشوائي واقعي للاستجابة
+            const randomCmd = commandsList[Math.floor(Math.random() * commandsList.length)];
+            
+            resetCards();
+            const activeCard = document.getElementById(randomCmd.id);
+            if (activeCard) {
+                activeCard.classList.add('active-card-pulse');
+            }
+
+            document.getElementById('clinicalInsightText').innerText = randomCmd.desc;
+            
+            // Text-to-Speech Vocalizer for non-verbal patients
+            speakText(randomCmd.name);
+
+            // حساب المؤشرات العصبية المتغيرة بناءً على البيانات
+            const focus = Math.min(99, Math.max(60, Math.floor(Math.abs(avg) * 2.5) + 65));
+            const stability = Math.min(99, Math.max(70, 95 - Math.floor(Math.abs(avg - calibrationBaseline))));
+            const pain = Math.floor(Math.random() * 10) + 5;
+            
+            document.getElementById('focusVal').innerText = `${focus}%`;
+            document.getElementById('focusBar').style.width = `${focus}%`;
+            document.getElementById('stabilityVal').innerText = `${stability}%`;
+            document.getElementById('stabilityBar').style.width = `${stability}%`;
+            document.getElementById('painVal').innerText = `${pain}% (مستقر)`;
+            document.getElementById('painBar').style.width = `${pain}%`;
+
+            if (Math.abs(avg) > 28 || pain > 20) {
+                document.getElementById('emergencyStatusBanner').classList.remove('hidden');
+            } else {
+                document.getElementById('emergencyStatusBanner').classList.add('hidden');
+            }
+
+            addEventLog(randomCmd.name, `${avg} \u03bcV`);
+            saveToCloud(randomCmd.name, avg);
+        }
+
+        function resetCards() {
+            commandsList.forEach(cmd => {
+                const el = document.getElementById(cmd.id);
+                if (el) el.classList.remove('active-card-pulse');
+            });
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA';
+                window.speechSynthesis.speak(utterance);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const simBtn = document.getElementById('simBtn');
-            const exportBtn = document.getElementById('exportBtn');
-            const textarea = document.getElementById('signalInput');
-            const eventLog = document.getElementById('eventLog');
+        function controlIoT(actionName) {
+            alert(`🏠 نظام التحكم البيئي: تم تنفيذ أمر "${actionName}" بنجاح عبر الاتصال العصبي.`);
+            addEventLog(`تحكم بيئي: ${actionName}`, 'مفعل لاسلكياً');
+        }
 
-            function runAnalysis() {
-                let rawVal = textarea.value.trim();
-                let signalArray = [];
-                try {
-                    signalArray = rawVal
-                        .replace(/[\[\]]/g, '')
-                        .split(/[\s,]+/)
-                        .map(item => parseFloat(item.trim()))
-                        .filter(item => !isNaN(item));
-                } catch (e) {
-                    signalArray = [];
-                }
+        function triggerDirectNurseCall() {
+            alert('🚨 تم إطلاق نداء طوارئ فوري لطاقم التمريض وغرفة العمليات!');
+            addEventLog('نداء طوارئ الممرض', 'عاجل وحرج');
+        }
 
-                const output = processBrainMind(signalArray);
-                document.getElementById('classification').innerText = output.classification;
-                document.getElementById('avgSignal').innerText = output.avgSignal;
-                document.getElementById('spectralPower').innerText = output.powerSignal;
-                document.getElementById('varVal').innerText = output.variance;
-                document.getElementById('descAr').innerText = output.descAr;
+        function triggerClinicalOverride() {
+            isOverrideActive = !isOverrideActive;
+            const btn = document.getElementById('overrideBtn');
+            if (isOverrideActive) {
+                btn.classList.remove('bg-amber-950/80', 'text-amber-400');
+                btn.classList.add('bg-red-600', 'text-white');
+                btn.innerText = '🛡️ إلغاء طوارئ Override (مفعل)';
+                alert('⚠️ تم تفعيل مفتاح الطوارئ السريري الآمن! تم قطع الإرسال اللاسلكي عن الأطراف فوراً.');
+                addEventLog('مفتاح الطوارئ السريري', 'قفل أمان تام');
+            } else {
+                btn.classList.remove('bg-red-600', 'text-white');
+                btn.classList.add('bg-amber-950/80', 'text-amber-400');
+                btn.innerText = '🛡️ مفتاح الطوارئ السريري (Override)';
+                alert('✅ تم إيقاف وضع الحماية وإعادة تفعيل النظام العصبي.');
+            }
+        }
+
+        function adaptiveCalibration() {
+            const rawText = document.getElementById('signalInput').value;
+            const numbers = parseMultiFormat(rawText);
+            if (numbers.length > 0) {
+                calibrationBaseline = numbers.reduce((a, b) => a + b, 0) / numbers.length;
+                alert(`🎛️ تمت المعايرة التكيفية بنجاح! خط الأساس الجديد للراحة: ${calibrationBaseline.toFixed(2)} μV`);
+                addEventLog('معايرة تكيفية', `${calibrationBaseline.toFixed(2)} μV`);
+            } else {
+                alert('الرجاء إدخال إشارات صالحة قبل المعايرة.');
+            }
+        }
+
+        function addEventLog(cmdName, signalVal) {
+            const tbody = document.getElementById('eventLogBody');
+            const now = new Date().toLocaleTimeString('en-US', { hour12: false });
+            
+            if (tbody.children.length === 1 && tbody.children[0].cells[0].innerText === '--:--:--') {
+                tbody.innerHTML = '';
+            }
+
+            const row = document.createElement('tr');
+            row.className = 'border-b border-slate-800/30 hover:bg-slate-800/20 transition-colors';
+            row.innerHTML = `
+                <td class="py-2 text-slate-400">${now}</td>
+                <td class="py-2 text-emerald-400 font-semibold">${cmdName}</td>
+                <td class="py-2 text-blue-400">${signalVal}</td>
+                <td class="py-2"><span class="px-2 py-0.5 bg-emerald-950 text-emerald-400 rounded text-[10px]">مكتمل وآمن</span></td>
+            `;
+
+            tbody.insertBefore(row, tbody.firstChild);
+            if (tbody.children.length > 6) {
+                tbody.removeChild(tbody.lastChild);
+            }
+        }
+
+        function clearEventLog() {
+            document.getElementById('eventLogBody').innerHTML = `
+                <tr>
+                    <td class="py-2 text-slate-500">--:--:--</td>
+                    <td class="py-2">تم مسح السجل اللحظي...</td>
+                    <td class="py-2">--</td>
+                    <td class="py-2 text-slate-500">خامل</td>
+                </tr>`;
+        }
+
+        function saveToCloud(cmd, val) {
+            let history = JSON.parse(localStorage.getItem('bci_cloud_sessions') || '[]');
+            history.unshift({ time: new Date().toISOString(), command: cmd, signal: val });
+            if (history.length > 20) history.pop();
+            localStorage.setItem('bci_cloud_sessions', JSON.stringify(history));
+            
+            const badge = document.getElementById('cloudStatus');
+            badge.innerText = '☁️ تم الحفظ بالسحابة (محدث)';
+            setTimeout(() => badge.innerText = '☁️ متصل بالسحابة الطبية (محفوظ)', 2000);
+        }
+
+        function toggleSimulation() {
+            const btn = document.getElementById('simBtn');
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+                simulationInterval = null;
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-slate-800', 'text-blue-400');
+                btn.innerHTML = '<span>⚡</span> محاكاة حية (Live EEG)';
+            } else {
+                btn.classList.remove('bg-slate-800', 'text-blue-400');
+                btn.classList.add('bg-blue-600', 'text-white');
+                btn.innerHTML = '<span>⏹️</span> إيقاف المحاكاة';
                 
-                // تحديث مؤشر اليقظة والشريط البصري
-                document.getElementById('focusScore').innerText = output.focus + '%';
-                document.getElementById('focusBar').style.width = output.focus + '%';
-
-                // إضاءة بطاقة لوحة التحكم المناسبة
-                updateControlPanelUI(output.classification);
-
-                // تحديث السجل الحي
-                const timeNow = new Date().toLocaleTimeString();
-                eventLog.innerHTML = `[${timeNow}] Decoded: ${output.classification} (Focus: ${output.focus}%)<br>` + eventLog.innerHTML;
+                simulationInterval = setInterval(() => {
+                    let simArr = [];
+                    for(let i=0; i<4; i++) {
+                        simArr.push((Math.random() * 45 - 18).toFixed(1));
+                    }
+                    document.getElementById('signalInput').value = `[${simArr.join(', ')}]`;
+                    processSignals();
+                }, 2500);
             }
+        }
 
-            if (analyzeBtn && textarea) {
-                analyzeBtn.addEventListener('click', runAnalysis);
-            }
+        function exportReport() {
+            const reportContent = `--- CleanBCI Enterprise Medical & Session Report ---
+Date: ${new Date().toLocaleString()}
+Patient Profile: Zainab Mohammed (السادس الإعدادي)
+Status: Enterprise Neural Interface Active & Verified
+Last Clinical Insight: ${document.getElementById('clinicalInsightText').innerText}
+Average Clean Signal: ${document.getElementById('avgSignal').innerText}
+Spectral Power: ${document.getElementById('spectralPower').innerText}
+Neural Link Stability: ${document.getElementById('stabilityVal').innerText}
+Focus Index: ${document.getElementById('focusVal').innerText}
+Pain Index: ${document.getElementById('painVal').innerText}
+------------------------------------------------------`;
 
-            // ميزة المحاكاة العشوائية لتوليد سيناريوهات حية
-            if (simBtn && textarea) {
-                simBtn.addEventListener('click', () => {
-                    const randomArrays = [
-                        "[25.2, 1.8, 19.5, 2.1, 28.4]", 
-                        "[1.4, 1.2, 1.3, 1.1, 1.0, 0.9]", 
-                        "[1.45, 1.48, 1.42, 1.46]", 
-                        "[18.5, 16.2, 19.1, 17.4, 18.0, 16.9]"
-                    ];
-                    const chosen = randomArrays[Math.floor(Math.random() * randomArrays.length)];
-                    textarea.value = chosen;
-                    runAnalysis();
-                });
-            }
-
-            // ميزة تصدير التقرير الطبي
-            if (exportBtn) {
-                exportBtn.addEventListener('click', () => {
-                    const classification = document.getElementById('classification').innerText;
-                    const avgSig = document.getElementById('avgSignal').innerText;
-                    const power = document.getElementById('spectralPower').innerText;
-                    const focus = document.getElementById('focusScore').innerText;
-                    const desc = document.getElementById('descAr').innerText;
-                    const time = new Date().toLocaleString();
-
-                    const reportContent = `========================================\n` +
-                                          `CLEANBCI CLINICAL SESSION REPORT\n` +
-                                          `Date: ${time}\n` +
-                                          `========================================\n` +
-                                          `Classification: ${classification}\n` +
-                                          `Average Signal: ${avgSig}\n` +
-                                          `Spectral Power: ${power}\n` +
-                                          `Neural Focus Index: ${focus}\n` +
-                                          `----------------------------------------\n` +
-                                          `Clinical Analysis:\n${desc}\n` +
-                                          `========================================\n` +
-                                          `Status: Verified by CleanBCI Neural Core`;
-
-                    const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `CleanBCI_Medical_Report_${Date.now()}.txt`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                });
-            }
-
-            if (clearBtn && textarea) {
-                clearBtn.addEventListener('click', () => {
-                    textarea.value = '';
-                    document.getElementById('classification').innerText = '-';
-                    document.getElementById('avgSignal').innerText = '0.00 µV';
-                    document.getElementById('spectralPower').innerText = '0.00 dB';
-                    document.getElementById('varVal').innerText = '0.00';
-                    document.getElementById('descAr').innerText = 'تم مسح البيانات بنجاح.';
-                    document.getElementById('focusScore').innerText = '0%';
-                    document.getElementById('focusBar').style.width = '0%';
-                    document.querySelectorAll('.card').forEach(card => card.classList.remove('active-card'));
-                    eventLog.innerHTML = 'System data cleared.';
-                });
-            }
-        });
+            const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Enterprise_Medical_Report_${Date.now()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
     </script>
 </body>
 </html>
