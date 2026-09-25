@@ -7,12 +7,12 @@
     <style>
         * { box-sizing: border-box; }
         body { font-family: Tahoma, sans-serif; background: #070a13; color: #f8fafc; padding: 15px; margin: 0; text-align: center; }
-        .container { max-width: 900px; margin: 0 auto; background: #0f172a; padding: 25px; border-radius: 14px; box-shadow: 0 4px 25px rgba(0,0,0,0.7); border: 1px solid #1e293b; text-align: right; }
+        .container { max-width: 850px; margin: 0 auto; background: #0f172a; padding: 20px; border-radius: 14px; box-shadow: 0 4px 25px rgba(0,0,0,0.7); border: 1px solid #1e293b; text-align: right; }
         h2 { color: #38bdf8; margin-bottom: 5px; font-size: 22px; text-align: center; }
-        p.sub { color: #94a3b8; font-size: 13px; margin-bottom: 20px; text-align: center; }
+        p.sub { color: #94a3b8; font-size: 13px; margin-bottom: 15px; text-align: center; }
         
-        label { display: block; text-align: right; font-size: 13px; color: #94a3b8; margin-bottom: 8px; }
-        textarea { width: 100%; height: 110px; background: #070a13; color: #38bdf8; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 14px; direction: ltr; text-align: left; resize: vertical; }
+        label { display: block; text-align: right; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
+        textarea { width: 100%; height: 95px; background: #070a13; color: #38bdf8; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 14px; direction: ltr; text-align: left; }
         
         .btn-group { margin: 15px 0; display: flex; gap: 10px; justify-content: flex-start; }
         button { background: #8b5cf6; color: white; border: none; padding: 11px 22px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; }
@@ -20,29 +20,29 @@
         .btn-clear { background: #334155; }
         .btn-clear:hover { background: #475569; }
         
-        /* تقارير التحليل المتقدم */
-        .report-box { margin-top: 25px; background: #070a13; padding: 20px; border-radius: 10px; border: 1px solid #1e293b; }
-        .report-box h3 { color: #38bdf8; font-size: 15px; margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 10px; text-align: right; }
-        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px; color: #e2e8f0; margin-bottom: 15px; direction: ltr; text-align: left; }
-        .analysis-text { background: #0f172a; padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; color: #cbd5e1; direction: rtl; text-align: right; border: 1px solid #1e293b; line-height: 1.6; }
+        .report-box { margin-top: 20px; background: #070a13; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; }
+        .report-box h3 { color: #38bdf8; font-size: 15px; margin-top: 0; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-align: right; }
+        .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; color: #e2e8f0; margin-bottom: 12px; direction: ltr; text-align: left; }
+        .analysis-text { background: #0f172a; padding: 10px; border-radius: 6px; margin-top: 8px; font-size: 13px; color: #cbd5e1; direction: rtl; text-align: right; border: 1px solid #1e293b; }
         
-        /* بوابة تجديد الحبل الشوكي والمربعات الثلاثة */
-        .spine-section { margin-top: 25px; background: #0b1329; padding: 18px; border-radius: 10px; border: 1px solid #1e293b; }
+        /* بوابة تجديد الحبل الشوكي والمربعات الثلاثة الأصلية */
+        .spine-section { margin-top: 25px; background: #0b1329; padding: 15px; border-radius: 10px; border: 1px solid #1e293b; }
         .spine-title { color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 5px; }
         .spine-sub { color: #94a3b8; font-size: 12px; margin-bottom: 15px; }
-        .spine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .spine-card { background: #131b2e; padding: 14px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
-        .spine-card-title { font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
-        .spine-card-val { font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 4px; }
+        .spine-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .spine-card { background: #131b2e; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
+        .spine-card-title { font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
+        .spine-card-val { font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 2px; }
         .spine-card-desc { font-size: 11px; color: #38bdf8; }
-        .progress-bar { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden; }
+        .progress-bar { width: 100%; background: #1e293b; height: 6px; border-radius: 3px; margin-top: 8px; overflow: hidden; }
         .progress-fill-1 { width: 64%; background: #a855f7; height: 100%; }
         .progress-fill-2 { width: 76%; background: #22c55e; height: 100%; }
         .progress-fill-3 { width: 99%; background: #3b82f6; height: 100%; }
 
-        /* لوحة التحكم السفلية للمريض */
-        .control-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
-        .card { background: #131b2e; padding: 18px; border-radius: 8px; border: 1px solid #1e293b; font-size: 14px; color: #e2e8f0; font-weight: bold; text-align: center; }
+        /* لوحة تحكم المريض السفلية مع الأيقونات */
+        .control-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .card { background: #131b2e; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; font-size: 13px; color: #e2e8f0; font-weight: bold; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .card span { font-size: 20px; }
     </style>
 </head>
 <body>
@@ -68,7 +68,7 @@
                 <div>Spectral Power: <span id="spectralPower" style="color: #38bdf8; font-weight: bold;">0.00 dB</span></div>
             </div>
             <div style="font-size: 14px; margin-bottom: 5px; color: #94a3b8;">NEURAL CLASSIFICATION / التصنيف العصبي:</div>
-            <div id="classification" style="color: #f43f5e; font-weight: bold; font-size: 16px;">-</div>
+            <div id="classification" style="color: #f43f5e; font-weight: bold; font-size: 15px;">-</div>
             
             <div class="analysis-text" id="descAr">
                 التحليل السريري والتقني: قم بالضغط على زر التحليل لفك تشفير الإشارة المدخلة بدقة.
@@ -101,23 +101,23 @@
             </div>
         </div>
 
-        <div style="margin-top: 25px; font-size: 15px; color: #38bdf8; font-weight: bold;">
+        <div style="text-align: right; margin-top: 25px; font-size: 14px; color: #94a3b8; font-weight: bold;">
             📊 لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)
         </div>
-        <div style="font-size: 12px; color: #94a3b8; margin-bottom: 10px;">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</div>
+        <div style="text-align: right; font-size: 12px; color: #64748b; margin-bottom: 8px;">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكيل العصبي</div>
         
         <div class="control-panel">
-            <div class="card">اليد اليمنى</div>
-            <div class="card">اليد اليسرى</div>
-            <div class="card">المشي والحركة</div>
-            <div class="card">طور اللعب السريع</div>
-            <div class="card">التركيز والقراءة</div>
-            <div class="card">طلب قضاء الحاجة</div>
+            <div class="card"><span>🚶‍♂️</span> المشي والحركة</div>
+            <div class="card"><span>✋</span> اليد اليسرى</div>
+            <div class="card"><span>🦾</span> اليد اليمنى</div>
+            <div class="card"><span>🎮</span> طور اللعب السريع</div>
+            <div class="card"><span>📖</span> التركيز والقراءة</div>
+            <div class="card"><span>🚻</span> طلب قضاء الحاجة</div>
         </div>
     </div>
 
     <script>
-        // دالتك الأصلية تماماً بدون أي تعديل عليها
+        // دالتك البرمجية الأصلية تماماً لفك تشفير الإشارات
         function processBrainMind(signalArray) {
             if (!Array.isArray(signalArray) || signalArray.length === 0) {
                 return {
@@ -140,8 +140,8 @@
                 classification: "",
                 descAr: "",
                 descEn: "",
-                avgSignal: `${avg.toFixed(2)} µV`,
-                powerSignal: `${(sum * avg).toFixed(2)} dB`
+                avgSignal: `${isNaN(avg) ? '0.00' : avg.toFixed(2)} µV`,
+                powerSignal: `${isNaN(sum * avg) ? '0.00' : (sum * avg).toFixed(2)} dB`
             };
 
             if (maxVal > 2.0 && avg > 1.4) {
@@ -183,7 +183,7 @@
             return result;
         }
 
-        // دالة ربط النصوص المدخلة من textarea وتحويلها لمصفوفة لتغذية دالتك الأصلية
+        // معالجة المصفوفات المدخلة وقراءتها بشكل صحيح دون أخطاء
         document.addEventListener('DOMContentLoaded', () => {
             const analyzeBtn = document.getElementById('analyzeBtn');
             const clearBtn = document.getElementById('clearBtn');
@@ -194,9 +194,9 @@
                     let rawVal = textarea.value.trim();
                     let signalArray = [];
                     try {
-                        // دعم تحليل النصوص والمصفوفات المدخلة بأمان تام
-                        const cleanedText = rawVal.replace(/[\[\]]/g, '');
-                        signalArray = cleanedText
+                        // دعم قراءة المصفوفات المتعددة الأبعاد وتحويلها لأرقام صالحة للتحليل
+                        signalArray = rawVal
+                            .replace(/[\[\]]/g, '')
                             .split(/[\s,]+/)
                             .map(item => parseFloat(item.trim()))
                             .filter(item => !isNaN(item));
