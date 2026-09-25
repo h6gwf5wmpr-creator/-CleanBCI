@@ -24,33 +24,33 @@
             <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
                 CleanBCI Advanced Dashboard
             </h1>
-            <p class="text-slate-400 text-xs md:text-sm font-medium">نظام متطور لسويس وعلاج الإشارات العصبية للبشر[span_0](start_span)[span_0](end_span)</p>
+            <p class="text-slate-400 text-xs md:text-sm font-medium">نظام متطور لمسح وعلاج الإشارات العصبية للبشر</p>
         </div>
 
         <!-- 1. لوحة إدخال المصفوفة والعينات السريعة -->
         <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 space-y-4">
             <div class="space-y-2" dir="ltr">
-                <label class="block text-sm font-semibold text-slate-300 text-right" dir="rtl">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (μV):[span_1](start_span)[span_1](end_span)</label>
+                <label class="block text-sm font-semibold text-slate-300 text-right" dir="rtl">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (μV):</label>
                 <textarea id="eeg-input" 
                           class="w-full h-20 bg-slate-950 border border-slate-700/60 rounded-xl p-4 text-cyan-400 font-mono text-base tracking-wider focus:outline-none focus:border-indigo-500"
                           placeholder="[34.5, -2.1, 29.8, -12.4]">[34.5, -2.1, 29.8, -12.4]</textarea>
             </div>
 
             <div class="space-y-2">
-                <span class="block text-xs font-bold text-slate-400">عينات الفحص التفاعلي اللحظي:[span_2](start_span)[span_2](end_span)</span>
+                <span class="block text-xs font-bold text-slate-400">عينات الفحص التفاعلي اللحظي:</span>
                 <div class="flex flex-wrap gap-2 text-xs">
-                    <button onclick="loadSample([34.5, -2.1, 29.8, -12.4])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">💪 حركة اليد اليمنى[span_3](start_span)[span_3](end_span)</button>
-                    <button onclick="loadSample([0.98, 1.12, 1.05, 0.92, 1.25, 1.01])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">🚽 طوارئ / قضاء حاجة[span_4](start_span)[span_4](end_span)</button>
-                    <button onclick="loadSample([1.4, 1.42, 1.38, 1.45, 1.41])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">📚 التركيز الذهني[span_5](start_span)[span_5](end_span)</button>
+                    <button onclick="loadSample([34.5, -2.1, 29.8, -12.4])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">💪 حركة اليد اليمنى</button>
+                    <button onclick="loadSample([0.98, 1.12, 1.05, 0.92, 1.25, 1.01])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">🚽 طوارئ / قضاء حاجة</button>
+                    <button onclick="loadSample([1.4, 1.42, 1.38, 1.45, 1.41])" class="py-1.5 px-3 bg-slate-800 hover:bg-indigo-950/60 hover:text-indigo-400 border border-slate-700 rounded-lg cursor-pointer">📚 التركيز الذهني</button>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <button onclick="runMindAnalysis()" class="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 font-bold rounded-xl shadow-lg shadow-indigo-500/20 cursor-pointer text-white hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                    🧠 فك تشويش وتحليل الإشارة[span_6](start_span)[span_6](end_span)
+                    🧠 فك تشويش وتحليل الإشارة
                 </button>
                 <button onclick="resetDashboard()" class="w-full py-3.5 px-6 bg-slate-800/80 font-bold rounded-xl border border-slate-700/50 cursor-pointer text-slate-300 hover:bg-slate-700 transition-all flex items-center justify-center gap-2">
-                    🔄 تصفية البيانات[span_7](start_span)[span_7](end_span)
+                    🔄 تصفية البيانات
                 </button>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <!-- 2. التقرير العصبي المتقدم (Advanced Neural Report) -->
         <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 space-y-4">
             <div class="flex items-center justify-between border-b border-slate-800/60 pb-3">
-                <h2 class="text-base font-bold text-indigo-400" dir="ltr">Advanced Neural Report[span_8](start_span)[span_8](end_span)</h2>
+                <h2 class="text-base font-bold text-indigo-400" dir="ltr">Advanced Neural Report</h2>
                 <div id="brain-wave-visualizer" class="flex items-end gap-[3px] h-6 opacity-30 transition-all">
                     <div class="wave-bar w-[3px] h-full bg-cyan-400 rounded-full" style="animation-delay: 0.1s;"></div>
                     <div class="wave-bar w-[3px] h-4 bg-indigo-400 rounded-full" style="animation-delay: 0.3s;"></div>
@@ -68,31 +68,31 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-slate-950/60 p-4 border border-slate-800/50 rounded-xl">
-                    <span class="text-xs font-semibold text-slate-500 block">NEURAL CLASSIFICATION / التصنيف العصبي[span_9](start_span)[span_9](end_span)</span>
-                    <span id="neuro-classification" class="text-base font-bold text-emerald-400 block mt-1">Ready / جاهز للاستقبال[span_10](start_span)[span_10](end_span)</span>
+                    <span class="text-xs font-semibold text-slate-500 block">NEURAL CLASSIFICATION / التصنيف العصبي</span>
+                    <span id="neuro-classification" class="text-base font-bold text-emerald-400 block mt-1">Ready / جاهز للاستقبال</span>
                 </div>
                 <div class="bg-slate-950/60 p-4 border border-slate-800/50 rounded-xl space-y-1 text-xs" dir="ltr">
-                    <div class="text-left"><span class="text-slate-500">Average Cleaned Signal:</span> <span id="avg-signal" class="font-bold text-cyan-400">—</span>[span_11](start_span)[span_11](end_span)</div>
-                    <div class="text-left"><span class="text-slate-500">Spectral Power:</span> <span id="power-signal" class="font-bold text-cyan-400">—</span>[span_12](start_span)[span_12](end_span)</div>
+                    <div class="text-left"><span class="text-slate-500">Average Cleaned Signal:</span> <span id="avg-signal" class="font-bold text-cyan-400">—</span></div>
+                    <div class="text-left"><span class="text-slate-500">Spectral Power:</span> <span id="power-signal" class="font-bold text-cyan-400">—</span></div>
                 </div>
             </div>
 
             <div class="bg-slate-950/60 p-4 border border-slate-800/50 rounded-xl text-sm space-y-3">
                 <div>
-                    <span class="text-xs font-bold text-indigo-400 block mb-1">التحليل السريري والتقني / CLINICAL ANALYSIS[span_13](start_span)[span_13](end_span)</span>
-                    <span class="text-[11px] text-slate-400 block">[التحليل باللغة العربية][span_14](start_span)[span_14](end_span)</span>
-                    <p id="analysis-ar" class="text-slate-300 font-medium mt-1">في انتظار إدخال الإشارة والتحليل...[span_15](start_span)[span_15](end_span)</p>
+                    <span class="text-xs font-bold text-indigo-400 block mb-1">التحليل السريري والتقني / CLINICAL ANALYSIS</span>
+                    <span class="text-[11px] text-slate-400 block">[التحليل باللغة العربية]</span>
+                    <p id="analysis-ar" class="text-slate-300 font-medium mt-1">في انتظار إدخال الإشارة والتحليل...</p>
                 </div>
                 <div class="border-t border-slate-800/40 pt-2" dir="ltr">
-                    <span class="text-[11px] text-slate-400 block text-left">[English Analysis][span_16](start_span)[span_16](end_span)</span>
-                    <p id="analysis-en" class="text-slate-400 font-mono text-xs text-left mt-1">Awaiting EEG data stream execution...[span_17](start_span)[span_17](end_span)</p>
+                    <span class="text-[11px] text-slate-400 block text-left">[English Analysis]</span>
+                    <p id="analysis-en" class="text-slate-400 font-mono text-xs text-left mt-1">Awaiting EEG data stream execution...</p>
                 </div>
             </div>
 
             <div class="border-t border-slate-800/60 pt-3 space-y-2">
-                <span class="block text-xs font-bold text-slate-400">سجل العمليات والفحوصات السابقة (Diagnostic History Log):[span_18](start_span)[span_18](end_span)</span>
+                <span class="block text-xs font-bold text-slate-400">سجل العمليات والفحوصات السابقة (Diagnostic History Log):</span>
                 <div id="history-log" class="space-y-1.5 text-xs text-slate-400 font-mono">
-                    <div class="bg-slate-950/50 p-2 rounded border border-slate-800/40 text-slate-500">لا توجد عمليات فحص مسجلة حتى الآن.[span_19](start_span)[span_19](end_span)</div>
+                    <div class="bg-slate-950/50 p-2 rounded border border-slate-800/40 text-slate-500">لا توجد عمليات فحص مسجلة حتى الآن.</div>
                 </div>
             </div>
         </div>
@@ -101,35 +101,35 @@
         <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 space-y-4">
             <div class="border-b border-slate-800/60 pb-3">
                 <h2 class="text-lg md:text-xl font-bold text-cyan-400 flex items-center gap-2">
-                    🌱 بوابة تجديد الحبل الشوكي التفاعلية / Neuro-Regeneration & Cellular Control[span_20](start_span)[span_20](end_span)
+                    🌱 بوابة تجديد الحبل الشوكي التفاعلية / Neuro-Regeneration & Cellular Control
                 </h2>
-                <p class="text-slate-400 text-xs mt-1">مراقبة حية لعمليات طرد الخلايا الميتة، تفعيل الجسر الرقمي، وتوجيه النبضات الفسيولوجية للعضلات[span_21](start_span)[span_21](end_span)</p>
+                <p class="text-slate-400 text-xs mt-1">مراقبة حية لعمليات طرد الخلايا الميتة، تفعيل الجسر الرقمي، وتوجيه النبضات الفسيولوجية للعضلات</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl space-y-2">
-                    <span class="text-xs font-bold text-slate-400 block">جسر الإشارات اللاسلكي (FES System):[span_22](start_span)[span_22](end_span)</span>
+                    <span class="text-xs font-bold text-slate-400 block">جسر الإشارات اللاسلكي (FES System):</span>
                     <div class="flex items-center justify-between">
-                        <span id="fes-status" class="text-sm font-bold text-slate-300">في وضع الانتظار[span_23](start_span)[span_23](end_span)</span>
-                        <span id="fes-pct" class="text-lg font-mono font-bold text-slate-500">0%[span_24](start_span)[span_24](end_span)</span>
+                        <span id="fes-status" class="text-sm font-bold text-slate-300">في وضع الانتظار</span>
+                        <span id="fes-pct" class="text-lg font-mono font-bold text-slate-500">0%</span>
                     </div>
                     <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden"><div id="fes-bar" class="bg-cyan-500 h-full w-0 transition-all duration-500"></div></div>
                 </div>
                 
                 <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl space-y-2">
-                    <span class="text-xs font-bold text-slate-400 block">تنظيف وتفكيك الأنسجة الميتة (Scar Clearance):[span_25](start_span)[span_25](end_span)</span>
+                    <span class="text-xs font-bold text-slate-400 block">تنظيف وتفكيك الأنسجة الميتة (Scar Clearance):</span>
                     <div class="flex items-center justify-between">
-                        <span class="text-sm font-bold text-slate-300">مستقر[span_26](start_span)[span_26](end_span)</span>
-                        <span class="text-lg font-mono font-bold text-emerald-500">76%[span_27](start_span)[span_27](end_span)</span>
+                        <span class="text-sm font-bold text-slate-300">مستقر</span>
+                        <span class="text-lg font-mono font-bold text-emerald-500">76%</span>
                     </div>
                     <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full w-[76%]"></div></div>
                 </div>
 
                 <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl space-y-2">
-                    <span class="text-xs font-bold text-slate-400 block">تكامل الخلايا الجذعية (iPSC Integration):[span_28](start_span)[span_28](end_span)</span>
+                    <span class="text-xs font-bold text-slate-400 block">تكامل الخلايا الجذعية (iPSC Integration):</span>
                     <div class="flex items-center justify-between">
-                        <span class="text-sm font-bold text-slate-300">نمو نشط[span_29](start_span)[span_29](end_span)</span>
-                        <span class="text-lg font-mono font-bold text-purple-400">64%[span_30](start_span)[span_30](end_span)</span>
+                        <span class="text-sm font-bold text-slate-300">نمو نشط</span>
+                        <span class="text-lg font-mono font-bold text-purple-400">64%</span>
                     </div>
                     <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden"><div class="bg-purple-500 h-full w-[64%]"></div></div>
                 </div>
@@ -139,34 +139,34 @@
         <!-- 4. لوحة تحكم واستجابة المريض اللحظية (البطاقات الستة كاملة) -->
         <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 space-y-4">
             <div class="border-b border-slate-800/60 pb-3">
-                <h2 class="text-lg md:text-xl font-bold text-purple-400">♿ لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)[span_31](start_span)[span_31](end_span)</h2>
-                <p class="text-slate-400 text-xs mt-1">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكل العصبي[span_32](start_span)[span_32](end_span)</p>
+                <h2 class="text-lg md:text-xl font-bold text-purple-400">♿ لوحة تحكم واستجابة المريض اللحظية (Patient Control Panel)</h2>
+                <p class="text-slate-400 text-xs mt-1">توضح حالة الأطراف والاحتياجات الحية للمريض بناءً على فك التشكل العصبي</p>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
                 <div id="card-right" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
                     <span class="text-2xl">💪</span>
-                    <span class="font-bold text-sm text-slate-200">اليد اليمنى[span_33](start_span)[span_33](end_span)</span>
+                    <span class="font-bold text-sm text-slate-200">اليد اليمنى</span>
                 </div>
                 <div id="card-left" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
                     <span class="text-2xl">✋</span>
-                    <span class="font-bold text-sm text-slate-200">اليد اليسرى[span_34](start_span)[span_34](end_span)</span>
+                    <span class="font-bold text-sm text-slate-200">اليد اليسرى</span>
                 </div>
                 <div id="card-walk" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
                     <span class="text-2xl">🏃</span>
-                    <span class="font-bold text-sm text-slate-200">المشي والحركة[span_35](start_span)[span_35](end_span)</span>
+                    <span class="font-bold text-sm text-slate-200">المشي والحركة</span>
                 </div>
                 <div id="card-game" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
                     <span class="text-2xl">🎮</span>
-                    <span class="font-bold text-sm text-slate-200">طور اللعب السريع[span_36](start_span)[span_36](end_span)</span>
+                    <span class="font-bold text-sm text-slate-200">طور اللعب السريع</span>
                 </div>
                 <div id="card-focus" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
                     <span class="text-2xl">📚</span>
-                    <span class="font-bold text-sm text-slate-200">التركيز والقراءة[span_37](start_span)[span_37](end_span)</span>
+                    <span class="font-bold text-sm text-slate-200">التركيز والقراءة</span>
                 </div>
                 <div id="card-potty" class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center gap-2 transition-all duration-300 opacity-40">
                     <span class="text-2xl">🚽</span>
-                    <span class="font-bold text-sm text-slate-200">طلب قضاء الحاجة[span_38](start_span)[span_38](end_span)</span>
+                    <span class="font-bold text-sm text-slate-200">طلب قضاء الحاجة</span>
                 </div>
             </div>
         </div>
@@ -232,7 +232,7 @@
                 result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (Motor Cortex)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بدقة.";
                 result.descEn = "A sharp, localized neural discharge detected in the left frontal lobe (Motor Cortex), indicating a definitive motor intention to precisely move the Right Hand.";
                 result.cardId = "card-right";
-                result.fesText = "نشط - تحفيز اليد اليمنى 96%"; result.fesPct = "96%"; result.fesWidth = "96%";
+                result.fesText = "نشط - تحفيز اليد اليمنى"; result.fesPct = "96%"; result.fesWidth = "96%";
             } else if (Math.abs(minVal) > 15.0 && maxVal < 20.0) {
                 result.classification = "Left Hand Movement / حركة اليد اليسرى";
                 result.descAr = "تم رصد استجابة عصبية قوية في القشرة الحركية اليمنى، لتفعيل أمر تحريك اليد اليسرى.";
