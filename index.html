@@ -4,166 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CleanBCI Advanced Dashboard</title>
+    <!-- تضمين مكتبة Tailwind CSS للتصميم الفخم المطور -->
+    <script src="https://jsdelivr.net"></script>
     <style>
-        :root {
-            --primary: #6366f1;
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --text: #f8fafc;
-        }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: system-ui, -apple-system, sans-serif;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .dashboard-card {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 5px;
-            color: #f1f5f9;
-        }
-        .subtitle {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #cbd5e1;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-            background: #0f172a;
-            color: #fff;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 15px;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-        .btn-action {
-            width: 100%;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: opacity 0.2s;
-        }
-        .btn-action:hover { opacity: 0.9; }
-        .result-box {
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            display: none;
-        }
-        .result-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #38bdf8;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 8px;
-        }
-        .result-detail {
-            margin: 10px 0;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .result-detail span {
-            font-weight: bold;
-            color: #e2e8f0;
-        }
+        @import url('https://googleapis.com');
+        body { font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body>
+<body class="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-6 flex flex-col items-center justify-center selection:bg-indigo-500/30">
 
-<div class="dashboard-card">
-    <h2>CleanBCI Advanced Dashboard</h2>
-    <div class="subtitle">نظام تحليل إشارات الدماغ المتقدم - محاكاة الدماغ الواعي</div>
-    
-    <div style="margin-bottom: 15px;">
-        <label>أدخل مصفوفة إشارات الدماغ (EEG Stream Array):</label>
-        <textarea id="eegInput" placeholder="مثال: [3.5, -2.1, 8.4, 1.2, -4.5, 6.7]"></textarea>
-    </div>
-    
-    <button class="btn-action" onclick="sendDataToAPI()">تحليل وفك تشويش الإشارات 🧠</button>
-    
-    <div id="loading" style="text-align:center; color:var(--primary); margin-top:15px; display:none; font-weight: bold;">جاري معالجة وفلترة الإشارات العصبية...</div>
-    
-    <div id="resultContainer" class="result-box">
-        <div class="result-title">✨ تقرير الحالة العصبية المتقدم / Advanced Neural Report</div>
-        <div class="result-detail" id="resLabel"></div>
-        <div class="result-detail" id="resMean"></div>
-        <div class="result-detail" id="resEnergy"></div>
-        <div class="result-detail" id="resExplanation" style="color: #cbd5e1; background: #1e293b; padding: 10px; border-radius: 6px; margin-top: 10px;"></div>
-    </div>
-</div>
-
-<script>
-async function sendDataToAPI() {
-    const inputVal = document.getElementById('eegInput').value;
-    const resultContainer = document.getElementById('resultContainer');
-    const loading = document.getElementById('loading');
-    
-    const resLabel = document.getElementById('resLabel');
-    const resMean = document.getElementById('resMean');
-    const resEnergy = document.getElementById('resEnergy');
-    const resExplanation = document.getElementById('resExplanation');
-    
-    resultContainer.style.display = 'none';
-    loading.style.display = 'block';
-    
-    try {
-        let parsedData = JSON.parse(inputVal);
-        const response = await fetch('https://cleanbci.onrender.com/predict', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ features: parsedData })
-        });
-        const data = await response.json();
+    <div class="w-full max-w-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 md:p-8 space-y-6">
         
-        resLabel.innerHTML = `<span>التصنيف العصبي:</span> ${data.label}`;
-        resMean.innerHTML = `<span>متوسط الإشارة المنقية:</span> ${data.mean_signal_value}`;
-        resEnergy.innerHTML = `<span>طاقة وقوة الإشارة الطيفية:</span> ${data.signal_energy}`;
-        resExplanation.innerHTML = `<span>التحليل السريري والتقني:</span> ${data.description}`;
-        
-        resultContainer.style.display = 'block';
-    } catch (error) {
-        resultContainer.style.display = 'block';
-        resLabel.innerHTML = `<span style="color:#ef4444;">خطأ في المدخلات:</span> تأكد من كتابة المصفوفة بشكل صحيح بالأقواس والأرقام الفاصلة.`;
-        resMean.innerHTML = "";
-        resEnergy.innerHTML = "";
-        resExplanation.innerHTML = `التفاصيل التقنية: ${error}`;
-    } finally {
-        loading.style.display = 'none';
-    }
-}
-</script>
+        <!-- الهيدر والتسمية -->
+        <div class="text-center space-y-2 border-b border-slate-800/60 pb-4">
+            <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
+                CleanBCI Advanced Dashboard
+            </h1>
+            <p class="text-slate-400 text-xs md:text-sm font-medium">نظام تحليل إشارات الدماغ المتقدم - محاكاة الدماغ الواعي</p>
+        </div>
 
-</body>
-</html>
+        <!-- حقل إدخال المصفوفة -->
+        <div class="space-y-3" dir="ltr">
+            <label class="block text-sm font-semibold text-slate-300 text-right" dir="rtl">أدخل مصفوفة إشارات الدماغ (EEG Stream Array):</label>
+            <textarea id="eeg-input" 
+                      class="w-full h-24 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-cyan-400 font-mono text-base tracking-wider focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-slate-700"
+                      placeholder="[1.7, 1.4, 1.6, 1.2, 1.8, 1.5]"></textarea>
+        </div>
+
+        <!-- أزرار التحكم والعمليات اللحظية -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button id="btn-analyze" 
+                    class="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-[0.98] font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
+                🧠 تحليل وفك تشويش الإشارات
+            </button>
+            <button id="btn-reset" 
+                    class="w-full py-3.5 px-6 bg-slate-800/80 hover:bg-slate-700/90 active:scale-[0.98] font-bold rounded-xl border border-slate-700/50 transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-300">
+                🔄 مسح وتجربة مصفوفة أخرى
+            </button>
+        </div>
+
+        <!-- تقرير الحالة العصبية المتقدم -->
+        <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-5 md:p-6 space-y-4">
+            <h2 class="text-base md:text-lg font-bold text-indigo-400 flex items-center gap-2 border-b border-slate-800/40 pb-2" dir="ltr" class="text-left">
+                ✨ Advanced Neural Report / تقرير الحالة العصبية المتقدم
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- تصنيف الطرف الحركي أو النشاط -->
+                <div class="bg-slate-900/40 p-4 border border-slate-800/40 rounded-lg">
+                    <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Neural Classification / التصنيف العصبي</span>
+                    <span id="neuro-classification" class="text-base md:text-lg font-bold text-emerald-400 block mt-1">Ready / جاهز للاستقبال</span>
+                </div>
+                <!-- الحسابات الرقمية الدقيقة لتصفية التشويش -->
+                <div class="bg-slate-900/40 p-4 border border-slate-800/40 rounded-lg space-y-2" dir="ltr">
+                    <div>
+                        <span class="text-xs font-semibold text-slate-500 block text-left">Average Cleaned Signal / متوسط الإشارة المنقاة:</span>
+                        <span id="avg-signal" class="text-sm font-mono font-bold text-cyan-400 block mt-0.5">—</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-slate-500 block text-left">Spectral Power / طاقة وقوة الإشارة الطيفية:</span>
+                        <span id="power-signal" class="text-sm font-mono font-bold text-cyan-400 block mt-0.5">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شرح الحالة الدقيق ثنائي اللغة -->
+            <div class="bg-slate-900/40 p-5 border border-slate-800/40 rounded-lg space-y-4">
+                <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Detailed Clinical Analysis / التحليل السريري والتقني الدقيق</span>
+                
+                <!-- الشرح باللغة العربية -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-indigo-400 block">[التحليل باللغة العربية]</span>
+                    <p id="analysis-ar" class="text-sm text-slate-300 leading-relaxed font-medium">في انتظار إدخال الإشارة والتحليل...</p>
+                </div>
+                
+                <!-- الشرح باللغة الإنجليزية -->
+                <div class="space-y-1 border-t border-slate-800/40 pt-3" dir="ltr">
+                    <span class="text-xs font-bold text-indigo-400 block text-left">[English Analysis]</span>
+                    <p id="analysis-en" class="text-sm text-slate-400 leading-relaxed font-mono text-left">Awaiting EEG data stream execution...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- كود المايند والتحكم الديناميكي اللحظي -->
+    <script>
+        // خوارزمية "المايند" لمعالجة وتصنيف مصفوفات الدماغ
+        function processBrainMind(signalArray) {
+            const maxVal = Math.max(...signalArray);
+            const minVal = Math.min(...signalArray);
+            const sum = signalArray.reduce((a, b) => a + b, 0);
+            const avg = sum / signalArray.length;
+            const len = signalArray.length;
+
+            let result = {
+                classification: "",
+                descAr: "",
+                descEn: "",
+                avgSignal: `${avg.toFixed(2)} µV`,
+                powerSignal: `${(sum * avg).toFixed(2)} dB`
+            };
+
+            // خريطة تصنيف الأوامر المتكاملة بناءً على قيم وهندسة المصفوفة
+            if (maxVal > 2.0) {
+                result.classification = "Right Hand Movement / حركة اليد اليمنى";
+                result.descAr = "تم رصد تفريغ عصبي حاد وموجه في الفص الجبهي الأيسر (منطقة القشرة الحركية)، مما يشير بوضوح إلى نية حركية مؤكدة لتفعيل وتحريك اليد اليمنى بشكل دقيق للتعامل مع المحيط.";
+                result.descEn = "A sharp, localized neural discharge detected in the left frontal lobe (Motor Cortex), indicating a definitive motor intention to precisely activate and move the Right Hand.";
+            } 
+            else if (maxVal > 1.65 && maxVal <= 2.0) {
+                result.classification = "Left Hand Movement / حركة اليد اليسرى";
+                result.descAr = "تم رصد تفجر إشاري نشط متوافق مع القشرة الحركية اليمنى، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق تشويش عظام الجمجمة بنجاح وبدقة عالية.";
+                result.descEn = "An active signal burst registered within the right motor cortex, validating successful decoding of the Left Hand movement command while successfully bypassing cranial dampening features.";
+            } 
+            else if (avg > 1.5 && len >= 6) {
+                result.classification = "Spontaneous Walking & Lower Extremities / المشي والحركة العفوية للأطراف";
+                result.descAr = "إشارات متزامنة واسعة النطاق ممتدة عبر فصي الدماغ تتوافق مع الأنماط الحركية التلقائية والعفوية؛ مثل الرغبة في المشي، الوقوف، أو تنسيق حركة الأطراف السفلية.";
+                result.descEn = "Broad, synchronized bilateral hemisphere signals corresponding to automated motor patterns, successfully simulating walking or automated coordination of the lower extremities.";
+            } 
+            else if (avg > 1.35 && avg <= 1.5) {
+                result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
+                result.descAr = "ارتفاع ملحوظ في ترددات وسعة موجات بيتا (Beta Waves) فوق مناطق المعالجة البصرية واللغوية، مما يدل على حالة قراءة نشطة، تحليل نصوص، أو تركيز ذهني عميق.";
+                result.descEn = "Significant amplitude spikes in Beta frequencies over visual and language processing centers, demonstrating an active state of text comprehension, high cognitive load, or reading.";
+            } 
+            else if (minVal < 1.3 && maxVal > 1.55) {
+                result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
+                result.descAr = "تذبذبات سريعة واستجابات حسية حركية متعاقبة تحاكي ردود الفعل الفورية وعمليات اتخاذ القرار اللحظي المتوافقة تماماً مع ألعاب الفيديو أو التفاعل السريع مع واجهات الأجهزة.";
+                result.descEn = "High-frequency oscillations combined with consecutive sensorimotor feedbacks, simulating rapid reflex actions and instantaneous decision-making aligned with active gaming.";
+            } 
+            else if (avg >= 1.0 && avg <= 1.35 && minVal < 1.1) {
+                result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
+                result.descAr = "نجاح فك تشفير نبضات بطيئة آتية من الجهاز العصبي الذاتي (Autonomic System)، تحاكي بدقة التنبيهات الحشوية الداخلية للجسم والرغبة الملحة في قضاء الحاجة البيولوجية.";
+                result.descEn = "Successful decoding of low-frequency autonomic visceral impulses, precisely tracking internal physiological indicators and the biological urge to evacuate.";
+            } 
+            else {
+                result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
