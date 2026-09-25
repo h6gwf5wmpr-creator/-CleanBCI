@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CleanBCI Dashboard</title>
+    <title>CleanBCI Advanced Dashboard</title>
     <style>
         :root {
             --primary: #6366f1;
@@ -27,7 +27,7 @@
             padding: 30px;
             border-radius: 16px;
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
         h2 {
@@ -49,7 +49,7 @@
         }
         textarea {
             width: 100%;
-            height: 90px;
+            height: 100px;
             background: #0f172a;
             color: #fff;
             border: 1px solid #334155;
@@ -72,9 +72,7 @@
             margin-top: 15px;
             transition: opacity 0.2s;
         }
-        .btn-action:hover {
-            opacity: 0.9;
-        }
+        .btn-action:hover { opacity: 0.9; }
         .result-box {
             background: #0f172a;
             border: 1px solid #334155;
@@ -87,12 +85,12 @@
             font-size: 18px;
             font-weight: bold;
             color: #38bdf8;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border-bottom: 1px solid #334155;
             padding-bottom: 8px;
         }
         .result-detail {
-            margin: 8px 0;
+            margin: 10px 0;
             font-size: 15px;
             line-height: 1.6;
         }
@@ -105,23 +103,24 @@
 <body>
 
 <div class="dashboard-card">
-    <h2>CleanBCI Dashboard</h2>
-    <div class="subtitle">نظام تحليل إشارات الدماغ الذكية غير الجراحي</div>
+    <h2>CleanBCI Advanced Dashboard</h2>
+    <div class="subtitle">نظام تحليل إشارات الدماغ المتقدم - محاكاة الدماغ الواعي</div>
     
     <div style="margin-bottom: 15px;">
-        <label>أدخل مصفوفة إشارات الدماغ (EEG Array):</label>
-        <textarea id="eegInput" placeholder="مثال: [4.25, -2.12, 6.88, -1.45, 3.12]"></textarea>
+        <label>أدخل مصفوفة إشارات الدماغ (EEG Stream Array):</label>
+        <textarea id="eegInput" placeholder="مثال: [3.5, -2.1, 8.4, 1.2, -4.5, 6.7]"></textarea>
     </div>
     
-    <button class="btn-action" onclick="sendDataToAPI()">تحليل الإشارات الآن 🧠</button>
+    <button class="btn-action" onclick="sendDataToAPI()">تحليل وفك تشويش الإشارات 🧠</button>
     
-    <div id="loading" style="text-align:center; color:var(--primary); margin-top:15px; display:none; font-weight: bold;">جاري تنقية الإشارات وتحليلها...</div>
+    <div id="loading" style="text-align:center; color:var(--primary); margin-top:15px; display:none; font-weight: bold;">جاري معالجة وفلترة الإشارات العصبية...</div>
     
     <div id="resultContainer" class="result-box">
-        <div class="result-title">✨ تقرير التحليل المفصل / Analysis Report</div>
+        <div class="result-title">✨ تقرير الحالة العصبية المتقدم / Advanced Neural Report</div>
         <div class="result-detail" id="resLabel"></div>
         <div class="result-detail" id="resMean"></div>
-        <div class="result-detail" id="resExplanation"></div>
+        <div class="result-detail" id="resEnergy"></div>
+        <div class="result-detail" id="resExplanation" style="color: #cbd5e1; background: #1e293b; padding: 10px; border-radius: 6px; margin-top: 10px;"></div>
     </div>
 </div>
 
@@ -133,6 +132,7 @@ async function sendDataToAPI() {
     
     const resLabel = document.getElementById('resLabel');
     const resMean = document.getElementById('resMean');
+    const resEnergy = document.getElementById('resEnergy');
     const resExplanation = document.getElementById('resExplanation');
     
     resultContainer.style.display = 'none';
@@ -147,30 +147,17 @@ async function sendDataToAPI() {
         });
         const data = await response.json();
         
-        // ترجمة النتائج وتنسيقها بشكل احترافي ومبسط للمستخدم
-        let arabicLabel = "";
-        let explanationText = "";
-        
-        if (data.label.includes("Right Hand")) {
-            arabicLabel = "حركة اليد اليمنى (Right Hand)";
-            explanationText = "يشير هذا النمط العصبي إلى تخيل أو تنفيذ حركة باليد اليمنى، حيث تظهر النشاطات الكهربائية في القشرة الحركية للجانب الأيسر من الدماغ.";
-        } else if (data.label.includes("Rest")) {
-            arabicLabel = "حالة راحة واسترخاء (Rest / Relaxed)";
-            explanationText = "الإشارات مستقرة وتدل على عدم وجود حركة، وهي الحالة الطبيعية للدماغ أثناء الهدوء وانعدام التركيز الحركي النشط.";
-        } else {
-            arabicLabel = "حركة اليد اليسرى (Left Hand)";
-            explanationText = "يشير هذا النمط العصبي إلى تخيل أو تنفيذ حركة باليد اليسرى، المرتبطة بنشاط القشرة الحركية في الجانب الأيمن من الدماغ.";
-        }
-        
-        resLabel.innerHTML = `<span>التصنيف (Classification):</span> ${arabicLabel} (${data.label})`;
-        resMean.innerHTML = `<span>متوسط قوة الإشارة المنقية (Mean Signal):</span> ${data.mean_signal_value}`;
-        resExplanation.innerHTML = `<span>الشرح الطبي/التقني:</span> ${explanationText}`;
+        resLabel.innerHTML = `<span>التصنيف العصبي:</span> ${data.label}`;
+        resMean.innerHTML = `<span>متوسط الإشارة المنقية:</span> ${data.mean_signal_value}`;
+        resEnergy.innerHTML = `<span>طاقة وقوة الإشارة الطيفية:</span> ${data.signal_energy}`;
+        resExplanation.innerHTML = `<span>التحليل السريري والتقني:</span> ${data.description}`;
         
         resultContainer.style.display = 'block';
     } catch (error) {
         resultContainer.style.display = 'block';
-        resLabel.innerHTML = `<span style="color:#ef4444;">خطأ في المدخلات:</span> تأكد من كتابة المصفوفة بشكل صحيح بالأقواس والأرقام (مثال: [1.2, -0.5, 3.4])`;
+        resLabel.innerHTML = `<span style="color:#ef4444;">خطأ في المدخلات:</span> تأكد من كتابة المصفوفة بشكل صحيح بالأقواس والأرقام الفاصلة.`;
         resMean.innerHTML = "";
+        resEnergy.innerHTML = "";
         resExplanation.innerHTML = `التفاصيل التقنية: ${error}`;
     } finally {
         loading.style.display = 'none';
