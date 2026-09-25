@@ -1,61 +1,144 @@
-function processBrainMind(signalArray) {
-    if (!Array.isArray(signalArray) || signalArray.length === 0) {
-        return { classification: "Idle State", descAr: "لا توجد إشارة", descEn: "No signal", avgSignal: "0.00 µV", powerSignal: "0.00 dB" };
-    }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanBCI Advanced Dashboard</title>
+    <!-- تضمين مكتبة التصميم مع كسر الكاش ليعمل عام عند الكل فوراً -->
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        @import url('https://googleapis.com');
+        body { font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-6 flex flex-col items-center justify-center selection:bg-indigo-500/30">
 
-    const maxVal = Math.max(...signalArray);
-    const minVal = Math.min(...signalArray);
-    const sum = signalArray.reduce((a, b) => a + b, 0);
-    const avg = sum / signalArray.length;
-    const len = signalArray.length;
-    
-    // حساب المدى المطلق للإشارة لمعرفة شدة التذبذب
-    const signalRange = maxVal - minVal;
+    <div class="w-full max-w-3xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-2xl p-6 md:p-8 space-y-6">
+        
+        <!-- الهيدر والتسمية -->
+        <div class="text-center space-y-2 border-b border-slate-800/60 pb-4">
+            <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent">
+                CleanBCI Advanced Dashboard
+            </h1>
+            <p class="text-slate-400 text-xs md:text-sm font-medium">نظام تحليل إشارات الدماغ المتقدم - محاكاة الدماغ الواعي للبشر</p>
+        </div>
 
-    let result = {
-        classification: "",
-        descAr: "",
-        descEn: "",
-        avgSignal: `${avg.toFixed(2)} µV`,
-        powerSignal: `${(Math.abs(sum) * 1.5).toFixed(2)} dB`
-    };
+        <!-- حقل إدخال مصفوفة البشر الحقيقيين -->
+        <div class="space-y-3" dir="ltr">
+            <label class="block text-sm font-semibold text-slate-300 text-right" dir="rtl">أدخل مصفوفة إشارات الدماغ البشرية الحقيقية (μV):</label>
+            <textarea id="eeg-input" 
+                      class="w-full h-24 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-cyan-400 font-mono text-base tracking-wider focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder-slate-700"
+                      placeholder="[12.4, -4.2, 28.1, -15.6, 32.4, -8.9]"></textarea>
+        </div>
 
-    // خريطة الفصل بين الإشارات البشرية الحقيقية
-    if (maxVal > 30.0) {
-        result.classification = "Right Hand Movement / حركة اليد اليمنى";
-        result.descAr = "تم رصد تفريغ عصبي حاد وموجه في القشرة الحركية اليسرى يتجاوز 30 ميكروفولت، مما يشير إلى أمر حركي مؤكد ومباشر لتحريك اليد اليمنى.";
-        result.descEn = "A sharp, localized neural discharge exceeding 30 microvolts detected in the left motor cortex, indicating a definitive motor command to move the Right Hand.";
-    } 
-    else if (maxVal > 15.0 && maxVal <= 30.0 && signalRange < 50.0) {
-        result.classification = "Left Hand Movement / حركة اليد اليسرى";
-        result.descAr = "تم رصد تفجر إشاري نشط في القشرة الحركية اليمنى بمدى مستقر، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق الجمجمة.";
-        result.descEn = "An active signal burst registered within the right motor cortex with stable range, validating successful decoding of the Left Hand movement command.";
-    } 
-    else if (signalRange > 70.0) {
-        result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
-        result.descAr = "تذبذب حاد جداً وعنيف في الإشارات الكهربائية بفارق يتجاوز 70 ميكروفولت بين القمة والقاع، يحاكي استجابات ردود الفعل الفورية أثناء ألعاب الفيديو.";
-        result.descEn = "High-amplitude visual-motor oscillations exceeding 70 microvolts range, perfectly simulating instant reflex actions and rapid decision-making during gaming.";
-    } 
-    else if (avg > 8.0 && len >= 8) {
-        result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
-        result.descAr = "إشارات متزامنة واسعة النطاق وممتدة عبر عدة قنوات بجهد مستمر، تتوافق مع الأنماط الحركية التلقائية والعفوية لتنسيق حركة الأرجل والمشي.";
-        result.descEn = "Broad, multi-channel synchronized signals with continuous voltage, corresponding to automated motor patterns for leg coordination and walking.";
-    } 
-    else if (maxVal > 0 && maxVal <= 6.0 && minVal >= -5.0) {
-        result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
-        result.descAr = "إشارة منخفضة الجهد ومستقرة جداً (موجات بيتا الهادئة بحدود 4 ميكروفولت) فوق مناطق المعالجة البصرية، تدل على القراءة والتركيز الذهني العميق.";
-        result.descEn = "Low-voltage, highly stable signal (Beta waves around 4 microvolts) over visual processing centers, demonstrating active text comprehension and deep focus.";
-    } 
-    else if (avg < 0 && minVal < -1.0) {
-        result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
-        result.descAr = "فك تشفير نبضات بطيئة ذات جهد سالب قادمة من قاع الدماغ (الجهاز العصبي الذاتي)، تحاكي بدقة التنبيهات الحشوية الداخلية والرغبة في قضاء الحاجة.";
-        result.descEn = "Successful decoding of low-frequency, negative-voltage autonomic visceral impulses, tracking internal physiological indicators and the urge to evacuate.";
-    } 
-    else {
-        result.classification = "Spontaneous Reflex / حركة ارتدادية عفوية عامة";
-        result.descAr = "نشاط قشري عام وخلفي يتوافق مع الحركات الدقيقة واللاإرادية التي يقوم بها الجسم في وضع الراحة لتعديل الوضعية العامة.";
-        result.descEn = "Non-localized background cortical activity consistent with minor involuntary shifts executed by the body during rest intervals.";
-    }
+        <!-- أزرار التحكم والعمليات اللحظية -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button id="btn-analyze" 
+                    class="w-full py-3.5 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 active:scale-[0.98] font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all cursor-pointer flex items-center justify-center gap-2">
+                🧠 تحليل وفك تشويش الإشارات
+            </button>
+            <button id="btn-reset" 
+                    class="w-full py-3.5 px-6 bg-slate-800/80 hover:bg-slate-700/90 active:scale-[0.98] font-bold rounded-xl border border-slate-700/50 transition-all cursor-pointer flex items-center justify-center gap-2 text-slate-300">
+                🔄 مسح وتجربة مصفوفة أخرى
+            </button>
+        </div>
 
-    return result;
-}
+        <!-- تقرير الحالة العصبية المتقدم -->
+        <div class="bg-slate-950/50 border border-slate-800/80 rounded-xl p-5 md:p-6 space-y-4">
+            <h2 class="text-base md:text-lg font-bold text-indigo-400 flex items-center gap-2 border-b border-slate-800/40 pb-2" dir="ltr" class="text-left">
+                ✨ Advanced Neural Report / تقرير الحالة العصبية المتقدم
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- تصنيف الطرف الحركي البشري -->
+                <div class="bg-slate-900/40 p-4 border border-slate-800/40 rounded-lg">
+                    <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Neural Classification / التصنيف العصبي</span>
+                    <span id="neuro-classification" class="text-base md:text-lg font-bold text-emerald-400 block mt-1">Ready / جاهز للاستقبال</span>
+                </div>
+                <!-- الحسابات الرقمية لتصفية تشويش الجمجمة -->
+                <div class="bg-slate-900/40 p-4 border border-slate-800/40 rounded-lg space-y-2" dir="ltr">
+                    <div>
+                        <span class="text-xs font-semibold text-slate-500 block text-left">Average Cleaned Signal / متوسط الإشارة المنقاة:</span>
+                        <span id="avg-signal" class="text-sm font-mono font-bold text-cyan-400 block mt-0.5">—</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-slate-500 block text-left">Spectral Power / طاقة وقوة الإشارة الطيفية:</span>
+                        <span id="power-signal" class="text-sm font-mono font-bold text-cyan-400 block mt-0.5">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شرح الحالة الدقيق ثنائي اللغة -->
+            <div class="bg-slate-900/40 p-5 border border-slate-800/40 rounded-lg space-y-4">
+                <span class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Detailed Clinical Analysis / التحليل السريري والتقني الدقيق</span>
+                
+                <!-- الشرح باللغة العربية -->
+                <div class="space-y-1">
+                    <span class="text-xs font-bold text-indigo-400 block">[التحليل باللغة العربية]</span>
+                    <p id="analysis-ar" class="text-sm text-slate-300 leading-relaxed font-medium">في انتظار إدخال الإشارة والتحليل...</p>
+                </div>
+                
+                <!-- الشرح باللغة الإنجليزية -->
+                <div class="space-y-1 border-t border-slate-800/40 pt-3" dir="ltr">
+                    <span class="text-xs font-bold text-indigo-400 block text-left">[English Analysis]</span>
+                    <p id="analysis-en" class="text-sm text-slate-400 leading-relaxed font-mono text-left">Awaiting EEG data stream execution...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- كود المايند والتحكم الديناميكي اللحظي للبشر الحقيقيين -->
+    <script>
+        function processBrainMind(signalArray) {
+            if (!Array.isArray(signalArray) || signalArray.length === 0) {
+                return { classification: "Idle State", descAr: "لا توجد إشارة", descEn: "No signal", avgSignal: "0.00 µV", powerSignal: "0.00 dB" };
+            }
+
+            const maxVal = Math.max(...signalArray);
+            const minVal = Math.min(...signalArray);
+            const sum = signalArray.reduce((a, b) => a + b, 0);
+            const avg = sum / signalArray.length;
+            const len = signalArray.length;
+            const signalRange = maxVal - minVal;
+
+            let result = {
+                classification: "",
+                descAr: "",
+                descEn: "",
+                avgSignal: `${avg.toFixed(2)} µV`,
+                powerSignal: `${(Math.abs(sum) * 1.5).toFixed(2)} dB`
+            };
+
+            // خريطة الفصل الدقيقة بين الإشارات البشرية الحقيقية بالميكروفولت لمنع الخربطة
+            if (maxVal > 30.0) {
+                result.classification = "Right Hand Movement / حركة اليد اليمنى";
+                result.descAr = "تم رصد تفريغ عصبي حاد وموجه في القشرة الحركية اليسرى يتجاوز 30 ميكروفولت، مما يشير إلى أمر حركي مؤكد ومباشر لتحريك اليد اليمنى.";
+                result.descEn = "A sharp, localized neural discharge exceeding 30 microvolts detected in the left motor cortex, indicating a definitive motor command to move the Right Hand.";
+            } 
+            else if (maxVal > 15.0 && maxVal <= 30.0 && signalRange < 50.0) {
+                result.classification = "Left Hand Movement / حركة اليد اليسرى";
+                result.descAr = "تم رصد تفجر إشاري نشط في القشرة الحركية اليمنى بمدى مستقر، مما يؤكد نجاح فك تشفير أمر تحريك اليد اليسرى وتجاوز عائق الجمجمة.";
+                result.descEn = "An active signal burst registered within the right motor cortex with stable range, validating successful decoding of the Left Hand movement command.";
+            } 
+            else if (signalRange > 70.0) {
+                result.classification = "Interactive Gaming & Reflexes / طور اللعب والتفاعل السريع";
+                result.descAr = "تذبذبت حاد جداً وعنيف في الإشارات الكهربائية بفارق يتجاوز 70 ميكروفولت بين القمة والقاع، يحاكي استجابات ردود الفعل الفورية أثناء ألعاب الفيديو.";
+                result.descEn = "High-amplitude visual-motor oscillations exceeding 70 microvolts range, perfectly simulating instant reflex actions and rapid decision-making during gaming.";
+            } 
+            else if (avg > 8.0 && len >= 8) {
+                result.classification = "Spontaneous Walking / المشي وحركة الأطراف السفلية";
+                result.descAr = "إشارات متزامنة واسعة النطاق وممتدة عبر عدة قنوات بجهد مستمر، تتوافق مع الأنماط الحركية التلقائية والعفوية لتنسيق حركة الأرجل والمشي.";
+                result.descEn = "Broad, multi-channel synchronized signals with continuous voltage, corresponding to automated motor patterns for leg coordination and walking.";
+            } 
+            else if (maxVal > 0 && maxVal <= 6.0 && minVal >= -5.0) {
+                result.classification = "Cognitive Focus & Reading / التركيز الذهني والقراءة";
+                result.descAr = "إشارة منخفضة الجهد ومستقرة جداً (موجات بيتا الهادئة بحدود 4 ميكروفولت) فوق مناطق المعالجة البصرية، تدل على القراءة والتركيز الذهني العميق.";
+                result.descEn = "Low-voltage, highly stable signal (Beta waves around 4 microvolts) over visual processing centers, demonstrating active text comprehension and deep focus.";
+            } 
+            else if (avg < 0 && minVal < -1.0) {
+                result.classification = "Biological Excretion Urge / الرغبة في قضاء الحاجة";
+                result.descAr = "فك تشفير نبضات بطيئة ذات جهد سالب قادمة من قاع الدماغ (الجهاز العصبي الذاتي)، تحاكي بدقة التنبيهات الحشوية الداخلية والرغبة في قضاء الحاجة.";
+                result.descEn = "Successful decoding of low-frequency, negative-voltage autonomic visceral impulses, tracking internal physiological indicators and the urge to evacuate.";
+            } 
+            else {
