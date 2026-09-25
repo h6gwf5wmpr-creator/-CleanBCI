@@ -1,9 +1,20 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware  # 1. أضيفي هذا السطر
 from pydantic import BaseModel
 import numpy as np
 import joblib
 
 app = FastAPI()
+
+# 2. أضيفي هذا المقطع أسفل app = FastAPI() مباشرة
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 model = joblib.load('model.pkl')
 scaler = joblib.load('scaler.pkl')
 
